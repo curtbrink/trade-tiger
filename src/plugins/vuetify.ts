@@ -26,7 +26,8 @@ export default createVuetify({
     },
   },
   icons: {
-    defaultSet: 'mdi',
+    // @ts-ignore
+    defaults: 'mdi',
     sets: {
       mdi,
     },
