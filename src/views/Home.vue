@@ -1,5 +1,7 @@
 <template>
-  <HelloWorld />
+  <div>
+    <HelloWorld />
+  </div>
 </template>
 
 <script lang="ts" setup>
