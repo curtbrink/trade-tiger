@@ -1,12 +1,5 @@
 import axios from 'axios';
 import authService from './auth.service';
-import { Configuration } from '../lib/spacetraders-sdk/configuration';
-import { AgentsApi } from '../lib/spacetraders-sdk/api/agents-api';
-import { ContractsApi } from '../lib/spacetraders-sdk/api/contracts-api';
-import { DefaultApi } from '../lib/spacetraders-sdk/api/default-api';
-import { FactionsApi } from '../lib/spacetraders-sdk/api/factions-api';
-import { FleetApi } from '../lib/spacetraders-sdk/api/fleet-api';
-import { SystemsApi } from '../lib/spacetraders-sdk/api/systems-api';
 
 const instance = axios.create({});
 
@@ -37,13 +30,4 @@ instance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-const config = new Configuration({});
-
-export default {
-  agents: new AgentsApi(config, undefined, instance),
-  contracts: new ContractsApi(config, undefined, instance),
-  defaultApi: new DefaultApi(config, undefined, instance),
-  factions: new FactionsApi(config, undefined, instance),
-  fleet: new FleetApi(config, undefined, instance),
-  systems: new SystemsApi(config, undefined, instance),
-};
+export default instance;
