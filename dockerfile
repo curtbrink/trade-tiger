@@ -2,6 +2,7 @@ FROM node:latest as build-stage
 WORKDIR /app
 COPY ./ .
 RUN npm ci
+RUN npm run build
 
 FROM nginx as production-stage
 RUN mkdir /app
