@@ -8,7 +8,7 @@ import {
   FactionsApi,
   FleetApi,
   SystemsApi,
-} from 'spacetraders-sdk';
+} from '@/lib/spacetraders-sdk';
 
 const instance = axios.create({});
 
