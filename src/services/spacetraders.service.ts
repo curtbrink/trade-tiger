@@ -1,14 +1,12 @@
 import axios from 'axios';
 import authService from './auth.service';
-import {
-  AgentsApi,
-  Configuration,
-  ContractsApi,
-  DefaultApi,
-  FactionsApi,
-  FleetApi,
-  SystemsApi,
-} from '../lib/spacetraders-sdk';
+import { Configuration } from '../lib/spacetraders-sdk/configuration';
+import { AgentsApi } from '../lib/spacetraders-sdk/api/agents-api';
+import { ContractsApi } from '../lib/spacetraders-sdk/api/contracts-api';
+import { DefaultApi } from '../lib/spacetraders-sdk/api/default-api';
+import { FactionsApi } from '../lib/spacetraders-sdk/api/factions-api';
+import { FleetApi } from '../lib/spacetraders-sdk/api/fleet-api';
+import { SystemsApi } from '../lib/spacetraders-sdk/api/systems-api';
 
 const instance = axios.create({});
 
