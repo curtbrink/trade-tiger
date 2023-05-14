@@ -1,11 +1,11 @@
 FROM node:18.16.0 as build-stage
 WORKDIR /app
 COPY package*.json .
-RUN ls
+RUN echo $(ls -1 .)
 RUN npm install
-RUN ls
+RUN echo $(ls -1 .)
 COPY ./ .
-RUN ls
+RUN echo $(ls -1 .)
 RUN npm run build
 
 FROM nginx as production-stage
