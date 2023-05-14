@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import spacetradersService from '@/services/spacetraders.service';
+import spacetradersService from '../services/spacetraders.service';
 import { ref } from 'vue';
 
 const thing = await spacetradersService.agents.getMyAgent();

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import authService from '@/services/auth.service';
+import authService from './auth.service';
 import {
   AgentsApi,
   Configuration,
@@ -8,7 +8,7 @@ import {
   FactionsApi,
   FleetApi,
   SystemsApi,
-} from '@/lib/spacetraders-sdk';
+} from '../lib/spacetraders-sdk';
 
 const instance = axios.create({});
 
