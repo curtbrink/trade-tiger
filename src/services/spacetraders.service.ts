@@ -8,9 +8,7 @@ import {
   FactionsApi,
   FleetApi,
   SystemsApi,
-} from '../../../spacetraders-sdk';
-import { useRouter } from 'vue-router';
-import router from '../router';
+} from 'spacetraders-sdk';
 
 const instance = axios.create({});
 
