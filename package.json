@@ -13,7 +13,7 @@
     "js-cookie": "^3.0.5",
     "pinia": "^2.0.23",
     "roboto-fontface": "*",
-    "spacetraders-sdk": "file:lib/spacetraders-sdk",
+    "spacetraders-sdk": "file:../spacetraders-sdk",
     "vue": "^3.2.0",
     "vue-router": "^4.0.0",
     "vuetify": "^3.0.0",

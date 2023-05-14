@@ -7,10 +7,4 @@
   </v-container>
 </template>
 
-<script setup lang="ts">
-import spacetradersService from '@/services/spacetraders.service';
-import { ref } from 'vue';
-
-const thing = await spacetradersService.agents.getMyAgent();
-const reactiveThing = ref(thing);
-</script>
+<script setup lang="ts"></script>
