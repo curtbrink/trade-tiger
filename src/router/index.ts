@@ -1,25 +1,25 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router';
-import authService from '../services/auth.service';
+import authService from '@/services/auth.service';
 
 const routes = [
   {
     path: '/',
-    component: () => import('../views/Home.vue'),
+    component: () => import('@/views/Home.vue'),
     meta: {
       requiresAuth: false,
     },
   },
   {
     path: '/register',
-    component: () => import('../views/Register.vue'),
+    component: () => import('@/views/Register.vue'),
     meta: {
       requiresAuth: false,
     },
   },
   {
     path: '/derp',
-    component: () => import('../views/Home.vue'),
+    component: () => import('@/views/Home.vue'),
     meta: {
       requiresAuth: true,
     },

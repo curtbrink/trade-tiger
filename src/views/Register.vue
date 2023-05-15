@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-import authService from '../services/auth.service';
+import authService from '@/services/auth.service';
 
 function setToken() {
   authService.setAuthToken('derpalerp!');

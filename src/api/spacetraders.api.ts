@@ -1,7 +1,10 @@
 import axios from 'axios';
-import authService from './auth.service';
+import authService from '@/services/auth.service';
 
-const instance = axios.create({});
+const instance = axios.create({
+  // replace this with the real API when the API itself is all built out
+  baseURL: 'https://stoplight.io/mocks/spacetraders/spacetraders/96627693/',
+});
 
 // example retry logic for 429 rate-limit errors
 instance.interceptors.response.use(undefined, async (error) => {
