@@ -10,4 +10,7 @@ export default {
   hasAuthToken() {
     return !!this.getAuthToken();
   },
+  clearAuthToken() {
+    localStorage.setItem(COOKIE_NAME, '');
+  },
 };

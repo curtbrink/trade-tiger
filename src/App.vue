@@ -19,6 +19,6 @@
 }
 
 .title-bar {
-  font-family: 'Audiowide';
+  font-family: 'Audiowide', cursive;
 }
 </style>

@@ -1,27 +1,25 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router';
 import authService from '@/services/auth.service';
+import HomeView from '@/views/Home.vue';
+import AuthView from '@/views/Auth.vue';
 
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/Home.vue'),
-    meta: {
-      requiresAuth: false,
-    },
-  },
-  {
-    path: '/register',
-    component: () => import('@/views/Register.vue'),
-    meta: {
-      requiresAuth: false,
-    },
-  },
-  {
-    path: '/derp',
-    component: () => import('@/views/Home.vue'),
+    component: HomeView,
     meta: {
       requiresAuth: true,
+    },
+  },
+  {
+    path: '/auth',
+    component: AuthView,
+    meta: {
+      requiresAuth: false,
+    },
+    beforeEnter: () => {
+      authService.clearAuthToken();
     },
   },
 ];
@@ -34,7 +32,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   if (to.meta.requiresAuth && !authService.hasAuthToken()) {
     // bye
-    await router.push({ path: '/register', replace: true });
+    await router.push({ path: '/auth', replace: true });
   }
 });
 
