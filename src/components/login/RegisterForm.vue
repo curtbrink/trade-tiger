@@ -14,6 +14,7 @@ import { ref } from 'vue';
 import authService from '@/services/auth.service';
 import router from '@/router';
 import { FactionName } from '@/api/faction/faction-name.enum';
+import { useAgentStore } from '@/store/agent';
 
 const selectedName = ref<string>('');
 const selectedFaction = ref<FactionName>(FactionName.Cosmic);
@@ -22,8 +23,10 @@ const factionOptions = Object.values(FactionName).filter((it) =>
   isNaN(Number(it)),
 );
 
-function registerNewAgent() {
-  authService.setAuthToken('this is just a test for now');
-  router.push({ path: '/' });
+const agentStore = useAgentStore();
+
+async function registerNewAgent() {
+  await agentStore.register(selectedName.value, selectedFaction.value);
+  await router.push({ path: '/' });
 }
 </script>

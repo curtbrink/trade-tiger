@@ -1,0 +1,40 @@
+// Utilities
+import { defineStore } from 'pinia';
+import registerApi from '@/api/register/register.api';
+import { FactionName } from '@/api/faction/faction-name.enum';
+import { Agent } from '@/api/agent/agent.model';
+import authService from '@/services/auth.service';
+import { useShipStore } from '@/store/ship';
+import { useFactionStore } from '@/store/faction';
+import { useContractStore } from '@/store/contract';
+
+export const useAgentStore = defineStore('agent', {
+  state: () => ({
+    agent: undefined as Agent | undefined,
+  }),
+  actions: {
+    async register(name: string, faction: FactionName) {
+      const newAgentResponse = await registerApi.register({
+        faction,
+        symbol: name,
+      });
+      const newAgentData = newAgentResponse.data;
+      authService.setAuthToken(newAgentData.token);
+
+      // set agent
+      this.agent = newAgentData.agent;
+
+      // set ship
+      const shipStore = useShipStore();
+      shipStore.ship = newAgentData.ship;
+
+      // set faction
+      const factionStore = useFactionStore();
+      factionStore.faction = newAgentData.faction;
+
+      // set contract
+      const contractStore = useContractStore();
+      contractStore.contract = newAgentData.contract;
+    },
+  },
+});
