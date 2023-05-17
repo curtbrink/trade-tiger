@@ -1,9 +1,10 @@
 import axios from 'axios';
 import authService from '@/services/auth.service';
+import pThrottle from 'p-throttle';
 
 const instance = axios.create({
   // replace this with the real API when the API itself is all built out
-  baseURL: 'https://stoplight.io/mocks/spacetraders/spacetraders/96627693/',
+  baseURL: 'https://api.spacetraders.io/v2/',
 });
 
 instance.interceptors.response.use(undefined, async (error) => {
@@ -32,4 +33,10 @@ instance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-export default instance;
+const throttler = pThrottle({ limit: 2, interval: 1000 });
+
+export default {
+  get: throttler(instance.get),
+  post: throttler(instance.post),
+  patch: throttler(instance.patch),
+};

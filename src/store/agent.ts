@@ -7,12 +7,20 @@ import authService from '@/services/auth.service';
 import { useShipStore } from '@/store/ship';
 import { useFactionStore } from '@/store/faction';
 import { useContractStore } from '@/store/contract';
+import agentApi from '@/api/agent/agent.api';
 
 export const useAgentStore = defineStore('agent', {
   state: () => ({
     agent: undefined as Agent | undefined,
   }),
   actions: {
+    async ensureLoaded() {
+      if (this.agent) {
+        return Promise.resolve();
+      }
+      const agentResponse = await agentApi.getMyAgent();
+      this.agent = agentResponse.data;
+    },
     async register(name: string, faction: FactionName) {
       const newAgentResponse = await registerApi.register({
         faction,
