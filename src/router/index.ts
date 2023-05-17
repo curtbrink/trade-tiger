@@ -4,6 +4,7 @@ import authService from '@/services/auth.service';
 import HomeView from '@/views/Home.vue';
 import AuthView from '@/views/Auth.vue';
 import { useAgentStore } from '@/store/agent';
+import { useShipStore } from '@/store/ship';
 
 const routes = [
   {
@@ -40,6 +41,9 @@ router.beforeEach(async (to, from) => {
   if (to.meta.loadData) {
     const agentStore = useAgentStore();
     await agentStore.ensureLoaded();
+
+    const shipStore = useShipStore();
+    await shipStore.ensureLoaded();
   }
 });
 

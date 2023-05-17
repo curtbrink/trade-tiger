@@ -34,7 +34,7 @@ export const useAgentStore = defineStore('agent', {
 
       // set ship
       const shipStore = useShipStore();
-      shipStore.ship = newAgentData.ship;
+      shipStore.ships.push(newAgentData.ship);
 
       // set faction
       const factionStore = useFactionStore();
