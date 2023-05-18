@@ -13,6 +13,9 @@ export const useAgentStore = defineStore('agent', {
   state: () => ({
     agent: undefined as Agent | undefined,
   }),
+  getters: {
+    loggedIn: (state) => state.agent !== undefined,
+  },
   actions: {
     async ensureLoaded() {
       if (this.agent) {

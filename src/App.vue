@@ -2,14 +2,19 @@
   <v-app>
     <v-main>
       <v-app-bar class="pl-5 title-bar">TRADE-TIGER</v-app-bar>
-      <suspense>
-        <router-view />
-      </suspense>
+      <NavDrawer />
+      <v-container fill-height fluid>
+        <suspense>
+          <router-view />
+        </suspense>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import NavDrawer from '@/components/shared/NavDrawer.vue';
+</script>
 
 <style>
 @font-face {
