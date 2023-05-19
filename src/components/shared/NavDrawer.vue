@@ -30,9 +30,29 @@ const regularItems = [
     label: 'Home',
   },
   {
+    icon: 'mdi-account',
+    routePath: '/agent',
+    label: 'Agent',
+  },
+  {
     icon: 'mdi-rocket-launch',
-    routePath: '/',
+    routePath: '/ships',
     label: 'Ships',
+  },
+  {
+    icon: 'mdi-currency-usd',
+    routePath: '/contracts',
+    label: 'Contracts',
+  },
+  {
+    icon: 'mdi-account-multiple',
+    routePath: '/factions',
+    label: 'Factions',
+  },
+  {
+    icon: 'mdi-flare',
+    routePath: '/systems',
+    label: 'Systems',
   },
 ];
 </script>

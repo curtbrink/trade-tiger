@@ -3,8 +3,12 @@ import { createRouter, createWebHistory } from 'vue-router';
 import authService from '@/services/auth.service';
 import HomeView from '@/views/Home.vue';
 import AuthView from '@/views/Auth.vue';
+import ContractView from '@/views/Contract.vue';
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
+import { useContractStore } from '@/store/contract';
+
+type DataTag = 'agent' | 'contract' | 'ship';
 
 const routes = [
   {
@@ -12,8 +16,32 @@ const routes = [
     component: HomeView,
     meta: {
       requiresAuth: true,
-      loadData: true,
+      loadData: ['agent'] as DataTag[],
     },
+  },
+  {
+    path: '/agent',
+    redirect: '/',
+  },
+  {
+    path: '/ships',
+    redirect: '/',
+  },
+  {
+    path: '/contracts',
+    component: ContractView,
+    meta: {
+      requiresAuth: true,
+      loadData: ['agent', 'contract'] as DataTag[],
+    },
+  },
+  {
+    path: '/factions',
+    redirect: '/',
+  },
+  {
+    path: '/systems',
+    redirect: '/',
   },
   {
     path: '/auth',
@@ -38,12 +66,21 @@ router.beforeEach(async (to, from) => {
     await router.push({ path: '/auth', replace: true });
   }
 
-  if (to.meta.loadData) {
-    const agentStore = useAgentStore();
-    await agentStore.ensureLoaded();
-
-    const shipStore = useShipStore();
-    await shipStore.ensureLoaded();
+  // @ts-ignore
+  if (to.meta.loadData?.length) {
+    const dataTags = to.meta.loadData as DataTag[];
+    if (dataTags.includes('agent')) {
+      const agentStore = useAgentStore();
+      await agentStore.ensureLoaded();
+    }
+    if (dataTags.includes('contract')) {
+      const contractStore = useContractStore();
+      await contractStore.ensureLoaded();
+    }
+    if (dataTags.includes('ship')) {
+      const shipStore = useShipStore();
+      await shipStore.ensureLoaded();
+    }
   }
 });
 
