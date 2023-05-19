@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export type ResponseData<T> = { data: T };
 
 export type Paging = {
@@ -25,4 +27,9 @@ export async function iteratePagedData<T>(
     total = apiResponse.meta.total;
   }
   return allData;
+}
+
+export const prettyDateTemplate = 'MMM D, YYYY h:mm A';
+export function prettyDate(date: DateString) {
+  return dayjs(date).format(prettyDateTemplate);
 }

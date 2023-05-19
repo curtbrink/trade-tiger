@@ -7,9 +7,9 @@
     <v-card-text>
       <v-row>
         <v-col cols="12">
-          <span>Deadline: {{ deadlineDate }}</span
+          <span>Deadline: {{ prettyDate(contract.terms.deadline) }}</span
           ><br />
-          <span>Expires: {{ expirationDate }}</span
+          <span>Expires: {{ prettyDate(contract.expiration) }}</span
           ><br />
         </v-col>
         <v-col cols="12">
@@ -69,8 +69,8 @@
 import { Contract, ContractDelivery } from '@/api/contract/contract.model';
 import { computed } from 'vue';
 import ContractPayout from '@/components/contract/ContractPayout.vue';
-import dayjs from 'dayjs';
 import { useContractStore } from '@/store/contract';
+import { prettyDate } from '@/api/misc.types';
 
 const props = defineProps<{
   contract: Contract;
@@ -80,14 +80,6 @@ const contractStore = useContractStore();
 
 const subtitle = computed(() => {
   return `${props.contract.factionSymbol.toLowerCase()} | ${props.contract.type.toLowerCase()}`;
-});
-
-const expirationDate = computed(() => {
-  return dayjs(props.contract.expiration).format('MMM D, YYYY h:mm A');
-});
-
-const deadlineDate = computed(() => {
-  return dayjs(props.contract.terms.deadline).format('MMM D, YYYY h:mm A');
 });
 
 function getProgressValue(term: ContractDelivery) {

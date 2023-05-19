@@ -5,7 +5,29 @@
       <span class="subtitle">{{ ship.registration.role }}</span>
     </v-card-title>
     <v-card-text>
-      Status: {{ ship.nav.status }} at {{ ship.nav.waypointSymbol }}
+      <v-container>
+        <div v-if="!isMoving(ship)">
+          Status: {{ ship.nav.status }} at {{ ship.nav.waypointSymbol }}
+        </div>
+        <div v-else>
+          <v-row align="center">
+            <v-col cols="6">
+              Status: In transit<br />
+              Depart: {{ ship.nav.route.departure.symbol }}<br />
+              (time): {{ prettyDate(ship.nav.route.departureTime) }}<br />
+              Destination: {{ ship.nav.route.destination.symbol }}<br />
+              (time): {{ prettyDate(ship.nav.route.arrival) }}
+            </v-col>
+            <v-col cols="6">
+              <v-progress-linear
+                :model-value="getRouteProgress(ship)"
+                height="10"
+                striped
+                color="light-blue" />
+            </v-col>
+          </v-row>
+        </div>
+      </v-container>
     </v-card-text>
     <v-card-actions>
       <v-container>
@@ -55,8 +77,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Ship } from '@/api/ship/ship.model';
+import { Ship, ShipNavigationStatus } from '@/api/ship/ship.model';
 import { useShipStore } from '@/store/ship';
+import dayjs from 'dayjs';
+import { prettyDate } from '@/api/misc.types';
 
 const props = defineProps<{
   ship: Ship;
@@ -64,8 +88,20 @@ const props = defineProps<{
 
 const shipStore = useShipStore();
 
-function isSelected(ship) {
+function isSelected(ship: Ship) {
   return shipStore.selectedShip?.symbol === ship.symbol;
+}
+function isMoving(ship: Ship) {
+  return ship.nav.status === ShipNavigationStatus.InTransit;
+}
+function getRouteProgress(ship: Ship) {
+  const depart = dayjs(ship.nav.route.departureTime);
+  const arrive = dayjs(ship.nav.route.arrival);
+  const now = dayjs();
+
+  const totalSeconds = arrive.diff(depart, 'second');
+  const elapsedSeconds = now.diff(depart, 'second');
+  return (elapsedSeconds / totalSeconds) * 100;
 }
 </script>
 

@@ -1,4 +1,4 @@
-import { ShipNavigation } from '@/api/ship/ship.model';
+import { ShipFuel, ShipNavigation } from '@/api/ship/ship.model';
 
 interface OrbitDockShipResponse {
   nav: ShipNavigation;
@@ -6,3 +6,8 @@ interface OrbitDockShipResponse {
 
 export interface DockShipResponse extends OrbitDockShipResponse {}
 export interface OrbitShipResponse extends OrbitDockShipResponse {}
+
+export interface NavigateShipResponse {
+  nav: ShipNavigation;
+  fuel: ShipFuel;
+}

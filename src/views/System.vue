@@ -20,7 +20,11 @@
             <v-icon>mdi-map-marker-account</v-icon> You are here
           </div>
           <div v-else>
-            <v-btn block variant="outlined" prepend-icon="mdi-rocket"
+            <v-btn
+              block
+              variant="outlined"
+              prepend-icon="mdi-rocket"
+              @click="shipStore.navigateSelectedShip(item.symbol)"
               >Move To</v-btn
             >
           </div>
