@@ -21,7 +21,7 @@ export interface ContractDelivery {
 export interface ContractTerms {
   deadline: DateString;
   payment: ContractPayment;
-  delivery: ContractDelivery[];
+  deliver: ContractDelivery[];
 }
 
 export interface Contract {

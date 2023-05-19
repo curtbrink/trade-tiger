@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { Contract } from '@/api/contract/contract.model';
 import { iteratePagedData } from '@/api/misc.types';
 import contractApi from '@/api/contract/contract.api';
+import { useAgentStore } from '@/store/agent';
 
 export const useContractStore = defineStore('contract', {
   state: () => ({
@@ -16,6 +17,26 @@ export const useContractStore = defineStore('contract', {
         return Promise.resolve();
       }
       return this.getAllContracts();
+    },
+    async acceptContract(contractId: string) {
+      // validate id
+      const validatedContract = this.contracts.find(
+        (it) => it.id === contractId,
+      );
+      if (!validatedContract || validatedContract.accepted) {
+        return;
+      }
+
+      const acceptResponse = await contractApi.acceptContract(contractId);
+      const { agent, contract } = acceptResponse.data;
+
+      // update contracts
+      this.contracts = this.contracts.map((existing) => {
+        return existing.id === contract.id ? contract : existing;
+      });
+
+      const agentStore = useAgentStore();
+      agentStore.setAgent(agent);
     },
   },
 });

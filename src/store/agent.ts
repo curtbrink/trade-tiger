@@ -47,5 +47,8 @@ export const useAgentStore = defineStore('agent', {
       const contractStore = useContractStore();
       contractStore.contract = newAgentData.contract;
     },
+    setAgent(agent: Agent) {
+      this.agent = agent;
+    },
   },
 });
