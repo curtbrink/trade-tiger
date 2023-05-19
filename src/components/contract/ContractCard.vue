@@ -69,7 +69,7 @@
 import { Contract, ContractDelivery } from '@/api/contract/contract.model';
 import { computed } from 'vue';
 import ContractPayout from '@/components/contract/ContractPayout.vue';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { useContractStore } from '@/store/contract';
 
 const props = defineProps<{

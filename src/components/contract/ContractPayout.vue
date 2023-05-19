@@ -35,7 +35,7 @@ const props = defineProps<{
   payout: ContractPayment;
 }>();
 
-function formatNumber(number) {
+function formatNumber(number: number) {
   return '$ ' + new Intl.NumberFormat('en-US').format(number);
 }
 </script>

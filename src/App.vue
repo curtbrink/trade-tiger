@@ -29,7 +29,7 @@ import { useAgentStore } from '@/store/agent';
 const agentStore = useAgentStore();
 
 const formattedCredits = computed(() => {
-  return new Intl.NumberFormat('en-US').format(agentStore.agent?.credits);
+  return new Intl.NumberFormat('en-US').format(agentStore.agent?.credits || 0);
 });
 
 onBeforeMount(() => {
