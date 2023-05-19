@@ -1,16 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <v-app-bar class="pl-5 title-bar">
-        <b>TRADE-TIGER</b>
-        <template v-slot:append>
-          <div v-if="agentStore.loggedIn">
-            <v-container class="fill-width">
-              <v-icon>mdi-currency-usd</v-icon> {{ formattedCredits }}
-            </v-container>
-          </div>
-        </template>
-      </v-app-bar>
+      <AppBar />
       <NavDrawer />
       <v-container fill-height fluid>
         <suspense>
@@ -23,14 +14,8 @@
 
 <script setup lang="ts">
 import NavDrawer from '@/components/shared/NavDrawer.vue';
-import { computed, onBeforeMount } from 'vue';
-import { useAgentStore } from '@/store/agent';
-
-const agentStore = useAgentStore();
-
-const formattedCredits = computed(() => {
-  return new Intl.NumberFormat('en-US').format(agentStore.agent?.credits || 0);
-});
+import { onBeforeMount } from 'vue';
+import AppBar from '@/components/shared/AppBar.vue';
 
 onBeforeMount(() => {
   document.title = 'Trade Tiger';
@@ -42,13 +27,5 @@ onBeforeMount(() => {
   font-family: 'Audiowide';
   font-display: block;
   src: url('/fonts/Audiowide-Regular.ttf');
-}
-
-.title-bar {
-  font-family: 'Audiowide', cursive;
-}
-
-.fill-width {
-  min-width: 200px;
 }
 </style>

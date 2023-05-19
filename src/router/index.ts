@@ -4,6 +4,8 @@ import authService from '@/services/auth.service';
 import HomeView from '@/views/Home.vue';
 import AuthView from '@/views/Auth.vue';
 import ContractView from '@/views/Contract.vue';
+import ShipView from '@/views/Ship.vue';
+import SystemView from '@/views/System.vue';
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
 import { useContractStore } from '@/store/contract';
@@ -16,7 +18,7 @@ const routes = [
     component: HomeView,
     meta: {
       requiresAuth: true,
-      loadData: ['agent'] as DataTag[],
+      loadData: ['agent', 'ship'] as DataTag[],
     },
   },
   {
@@ -25,14 +27,18 @@ const routes = [
   },
   {
     path: '/ships',
-    redirect: '/',
+    component: ShipView,
+    meta: {
+      requiresAuth: true,
+      loadData: ['agent', 'ship'],
+    },
   },
   {
     path: '/contracts',
     component: ContractView,
     meta: {
       requiresAuth: true,
-      loadData: ['agent', 'contract'] as DataTag[],
+      loadData: ['agent', 'contract', 'ship'] as DataTag[],
     },
   },
   {
@@ -41,7 +47,11 @@ const routes = [
   },
   {
     path: '/systems',
-    redirect: '/',
+    component: SystemView,
+    meta: {
+      requiresAuth: true,
+      loadData: ['agent', 'ship'] as DataTag[],
+    },
   },
   {
     path: '/auth',
