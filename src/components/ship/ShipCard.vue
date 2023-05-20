@@ -19,11 +19,24 @@
               (time): {{ prettyDate(ship.nav.route.arrival) }}
             </v-col>
             <v-col cols="6">
-              <v-progress-linear
-                :model-value="getRouteProgress(ship)"
-                height="10"
-                striped
-                color="light-blue" />
+              <v-row>
+                <v-col cols="12">
+                  <v-progress-linear
+                    :model-value="getRouteProgress(ship)"
+                    height="10"
+                    striped
+                    color="light-blue" />
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-btn
+                    prepend-icon="mdi-refresh"
+                    @click="shipStore.refreshNav(ship.symbol)"
+                    >Refresh</v-btn
+                  >
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </div>
@@ -51,7 +64,7 @@
             >
           </v-col>
         </v-row>
-        <v-row v-if="isSelected(ship)">
+        <v-row>
           <v-col cols="6">
             <v-btn
               block

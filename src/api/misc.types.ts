@@ -33,3 +33,6 @@ export const prettyDateTemplate = 'MMM D, YYYY h:mm A';
 export function prettyDate(date: DateString) {
   return dayjs(date).format(prettyDateTemplate);
 }
+export function prettyNumber(num: number) {
+  return new Intl.NumberFormat('en-US').format(num);
+}

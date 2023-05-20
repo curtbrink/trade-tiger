@@ -6,7 +6,8 @@
         <v-row>
           <v-col cols="4">
             <div v-if="agentStore.loggedIn">
-              <v-icon>mdi-currency-usd</v-icon> {{ formattedCredits }}
+              <v-icon>mdi-currency-usd</v-icon>
+              {{ prettyNumber(agentStore.agent?.credits) }}
             </div>
           </v-col>
           <v-col cols="4">
@@ -28,15 +29,11 @@
 
 <script setup lang="ts">
 import { useAgentStore } from '@/store/agent';
-import { computed } from 'vue';
 import { useShipStore } from '@/store/ship';
+import { prettyNumber } from '@/api/misc.types';
 
 const agentStore = useAgentStore();
 const shipStore = useShipStore();
-
-const formattedCredits = computed(() => {
-  return new Intl.NumberFormat('en-US').format(agentStore.agent?.credits || 0);
-});
 </script>
 
 <style>

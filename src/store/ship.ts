@@ -7,6 +7,8 @@ import {
 } from '@/api/ship/ship.model';
 import shipApi from '@/api/ship/ship.api';
 import { iteratePagedData } from '@/api/misc.types';
+import { useSystemStore } from '@/store/system';
+import { WaypointTraitSymbol } from '@/api/waypoint/waypoint.model';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({
@@ -27,6 +29,13 @@ export const useShipStore = defineStore('ship', {
     async selectShip(symbol: string) {
       this.selectedShip =
         this.ships.find((it) => it.symbol === symbol) || this.ships[0];
+      const systemStore = useSystemStore();
+      await systemStore.getWaypointsForSystem(
+        this.selectedShip.nav.systemSymbol,
+      );
+    },
+    async addShip(ship: Ship) {
+      this.ships.push(ship);
     },
     async dockShip(symbol: string) {
       const response = await shipApi.dockShip(symbol);
@@ -53,6 +62,10 @@ export const useShipStore = defineStore('ship', {
       const { nav, fuel } = navigationResponse.data;
       await this.patchNav(this.selectedShip.symbol, nav);
       await this.patchFuel(this.selectedShip.symbol, fuel);
+    },
+    async refreshNav(shipSymbol: string) {
+      const response = await shipApi.refreshShipNav(shipSymbol);
+      await this.patchNav(shipSymbol, response.data);
     },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
       await this.patchShipProperty(shipSymbol, 'nav', newNav);
@@ -84,6 +97,23 @@ export const useShipStore = defineStore('ship', {
     },
     currentWaypoint(): string | undefined {
       return this.selectedShip?.nav.waypointSymbol;
+    },
+    shipyardAccessible(): boolean {
+      if (!this.selectedShip) {
+        return false;
+      }
+      if (this.selectedShip.nav.status !== ShipNavigationStatus.Docked) {
+        return false;
+      }
+      const systemStore = useSystemStore();
+      const waypoint = systemStore.systemWaypoints.find(
+        (it) => it.symbol === this.selectedShip!.nav.waypointSymbol,
+      );
+      return (
+        waypoint?.traits
+          .map((it) => it.symbol)
+          .includes(WaypointTraitSymbol.Shipyard) || false
+      );
     },
   },
 });

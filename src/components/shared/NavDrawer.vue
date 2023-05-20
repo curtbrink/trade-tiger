@@ -7,14 +7,22 @@
         :to="{ path: item.routePath }"
         :prepend-icon="item.icon"
         :title="item.label"></v-list-item>
+      <v-divider />
+      <v-list-item
+        v-if="shipStore.shipyardAccessible"
+        :to="{ path: '/shipyard' }"
+        prepend-icon="mdi-rocket-launch"
+        title="Shipyard" />
     </v-list>
   </v-navigation-drawer>
 </template>
 
 <script setup lang="ts">
 import { useAgentStore } from '@/store/agent';
+import { useShipStore } from '@/store/ship';
 
 const agentStore = useAgentStore();
+const shipStore = useShipStore();
 
 const authItems = [
   {

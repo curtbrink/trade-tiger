@@ -6,9 +6,12 @@ import AuthView from '@/views/Auth.vue';
 import ContractView from '@/views/Contract.vue';
 import ShipView from '@/views/Ship.vue';
 import SystemView from '@/views/System.vue';
+import ShipyardView from '@/views/Shipyard.vue';
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
 import { useContractStore } from '@/store/contract';
+import { useSystemStore } from '@/store/system';
+import { useShipyardStore } from '@/store/shipyard';
 
 type DataTag = 'agent' | 'contract' | 'ship';
 
@@ -18,7 +21,6 @@ const routes = [
     component: HomeView,
     meta: {
       requiresAuth: true,
-      loadData: ['agent', 'ship'] as DataTag[],
     },
   },
   {
@@ -30,7 +32,6 @@ const routes = [
     component: ShipView,
     meta: {
       requiresAuth: true,
-      loadData: ['agent', 'ship'],
     },
   },
   {
@@ -38,7 +39,6 @@ const routes = [
     component: ContractView,
     meta: {
       requiresAuth: true,
-      loadData: ['agent', 'contract', 'ship'] as DataTag[],
     },
   },
   {
@@ -50,7 +50,13 @@ const routes = [
     component: SystemView,
     meta: {
       requiresAuth: true,
-      loadData: ['agent', 'ship'] as DataTag[],
+    },
+  },
+  {
+    path: '/shipyard',
+    component: ShipyardView,
+    meta: {
+      requiresAuth: true,
     },
   },
   {
@@ -76,22 +82,16 @@ router.beforeEach(async (to, from) => {
     await router.push({ path: '/auth', replace: true });
   }
 
-  // @ts-ignore
-  if (to.meta.loadData?.length) {
-    const dataTags = to.meta.loadData as DataTag[];
-    if (dataTags.includes('agent')) {
-      const agentStore = useAgentStore();
-      await agentStore.ensureLoaded();
-    }
-    if (dataTags.includes('contract')) {
-      const contractStore = useContractStore();
-      await contractStore.ensureLoaded();
-    }
-    if (dataTags.includes('ship')) {
-      const shipStore = useShipStore();
-      await shipStore.ensureLoaded();
-    }
-  }
+  const agentStore = useAgentStore();
+  await agentStore.ensureLoaded();
+  const contractStore = useContractStore();
+  await contractStore.ensureLoaded();
+  const shipStore = useShipStore();
+  await shipStore.ensureLoaded();
+  const systemStore = useSystemStore();
+  await systemStore.ensureLoaded();
+  const shipyardStore = useShipyardStore();
+  await shipyardStore.ensureLoaded();
 });
 
 export default router;

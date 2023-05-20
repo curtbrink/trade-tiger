@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { iteratePagedData } from '@/api/misc.types';
 import { Waypoint } from '@/api/waypoint/waypoint.model';
 import waypointApi from '@/api/waypoint/waypoint.api';
+import { useShipStore } from '@/store/ship';
 
 export const useSystemStore = defineStore('system', {
   state: () => ({
@@ -12,6 +13,17 @@ export const useSystemStore = defineStore('system', {
       this.systemWaypoints = await iteratePagedData(
         waypointApi.getWaypointCallbackForSystem(systemId),
       );
+    },
+    async ensureLoaded() {
+      const shipStore = useShipStore();
+      if (
+        this.systemWaypoints.length &&
+        shipStore.selectedShip &&
+        this.systemWaypoints[0].systemSymbol === shipStore.currentSystem
+      ) {
+        return;
+      }
+      await this.getWaypointsForSystem(shipStore.currentSystem!);
     },
   },
   getters: {},

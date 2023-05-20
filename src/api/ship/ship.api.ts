@@ -5,8 +5,14 @@ import {
   DockShipResponse,
   NavigateShipResponse,
   OrbitShipResponse,
+  PurchaseShipResponse,
+  RefreshNavResponse,
 } from '@/api/ship/ship-response.model';
-import { NavigateShipRequest } from '@/api/ship/ship-request.model';
+import {
+  NavigateShipRequest,
+  PurchaseShipRequest,
+} from '@/api/ship/ship-request.model';
+import { ShipyardShipType } from '@/api/shipyard/shipyard.model';
 
 const shipApi = {
   getMyShips: (limit: number, page: number) =>
@@ -14,6 +20,8 @@ const shipApi = {
   dockShip: (symbol: string) => `my/ships/${symbol}/dock`,
   orbitShip: (symbol: string) => `my/ships/${symbol}/orbit`,
   navigateShip: (symbol: string) => `my/ships/${symbol}/navigate`,
+  purchaseShip: () => `my/ships`,
+  refreshNav: (symbol: string) => `my/ships/${symbol}/nav`,
 };
 
 export default {
@@ -55,6 +63,30 @@ export default {
       .post(shipApi.navigateShip(shipSymbol), {
         waypointSymbol,
       } as NavigateShipRequest)
+      .then((res) => res.data)
+      .catch((ex) => {
+        console.log(ex);
+      });
+  },
+
+  purchaseShip(
+    shipType: ShipyardShipType,
+    waypointSymbol: string,
+  ): Promise<ResponseData<PurchaseShipResponse>> {
+    return spacetradersApi
+      .post(shipApi.purchaseShip(), {
+        shipType,
+        waypointSymbol,
+      } as PurchaseShipRequest)
+      .then((res) => res.data)
+      .catch((ex) => {
+        console.log(ex);
+      });
+  },
+
+  refreshShipNav(shipSymbol: string): Promise<RefreshNavResponse> {
+    return spacetradersApi
+      .get(shipApi.refreshNav(shipSymbol))
       .then((res) => res.data)
       .catch((ex) => {
         console.log(ex);
