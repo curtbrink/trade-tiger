@@ -16,9 +16,48 @@
 import NavDrawer from '@/components/shared/NavDrawer.vue';
 import { onBeforeMount } from 'vue';
 import AppBar from '@/components/shared/AppBar.vue';
+import { useLoadingSpinner } from '@/store/loading-spinner';
+import { useAgentStore } from '@/store/agent';
+import { useShipStore } from '@/store/ship';
+import { useContractStore } from '@/store/contract';
+import { useFactionStore } from '@/store/faction';
+import { useSystemStore } from '@/store/system';
+import { useShipyardStore } from '@/store/shipyard';
 
 onBeforeMount(() => {
   document.title = 'Trade Tiger';
+
+  const storeLoadingHook = ({
+    name, // name of the action
+    store, // store instance, same as `someStore`
+    args, // array of parameters passed to the action
+    after, // hook after the action returns or resolves
+    onError, // hook if the action throws or rejects
+  }) => {
+    console.log(name);
+    const loadingSpinner = useLoadingSpinner();
+    loadingSpinner.setLoading();
+
+    after(() => {
+      loadingSpinner.setLoaded();
+    });
+
+    onError(() => {
+      loadingSpinner.setLoaded();
+    });
+  };
+
+  const listOfStores = [
+    useAgentStore(),
+    useShipStore(),
+    useContractStore(),
+    useFactionStore(),
+    useSystemStore(),
+    useShipyardStore(),
+  ];
+  for (const store of listOfStores) {
+    store.$onAction(storeLoadingHook);
+  }
 });
 </script>
 

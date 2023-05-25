@@ -77,21 +77,23 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
-  if (to.meta.requiresAuth && !authService.hasAuthToken()) {
-    // bye
-    await router.push({ path: '/auth', replace: true });
+  if (to.meta.requiresAuth) {
+    if (!authService.hasAuthToken()) {
+      // bye
+      await router.push({ path: '/auth', replace: true });
+    } else {
+      const agentStore = useAgentStore();
+      await agentStore.ensureLoaded();
+      const contractStore = useContractStore();
+      await contractStore.ensureLoaded();
+      const shipStore = useShipStore();
+      await shipStore.ensureLoaded();
+      const systemStore = useSystemStore();
+      await systemStore.ensureLoaded();
+      const shipyardStore = useShipyardStore();
+      await shipyardStore.ensureLoaded();
+    }
   }
-
-  const agentStore = useAgentStore();
-  await agentStore.ensureLoaded();
-  const contractStore = useContractStore();
-  await contractStore.ensureLoaded();
-  const shipStore = useShipStore();
-  await shipStore.ensureLoaded();
-  const systemStore = useSystemStore();
-  await systemStore.ensureLoaded();
-  const shipyardStore = useShipyardStore();
-  await shipyardStore.ensureLoaded();
 });
 
 export default router;
