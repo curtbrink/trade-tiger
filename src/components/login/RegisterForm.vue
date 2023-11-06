@@ -13,7 +13,7 @@
 import { ref } from 'vue';
 import authService from '@/services/auth.service';
 import router from '@/router';
-import { FactionName } from '@/api/faction/faction-name.enum';
+import { FactionName } from '@/api/models/faction-name.enum';
 import { useAgentStore } from '@/store/agent';
 
 const selectedName = ref<string>('');

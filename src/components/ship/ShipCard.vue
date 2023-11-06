@@ -84,16 +84,17 @@
             >
           </v-col>
         </v-row>
+        <v-row> </v-row>
       </v-container>
     </v-card-actions>
   </v-card>
 </template>
 
 <script lang="ts" setup>
-import { Ship, ShipNavigationStatus } from '@/api/ship/ship.model';
+import { Ship, ShipNavigationStatus } from '@/api/models/ship.model';
 import { useShipStore } from '@/store/ship';
 import dayjs from 'dayjs';
-import { prettyDate } from '@/api/misc.types';
+import { prettyDate } from '@/api/models/misc.types';
 
 const props = defineProps<{
   ship: Ship;
@@ -116,6 +117,7 @@ function getRouteProgress(ship: Ship) {
   const elapsedSeconds = now.diff(depart, 'second');
   return (elapsedSeconds / totalSeconds) * 100;
 }
+function canRefuel(ship: Ship) {}
 </script>
 
 <style>

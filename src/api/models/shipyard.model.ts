@@ -1,11 +1,11 @@
-import { DateString } from '@/api/misc.types';
+import { DateString } from '@/api/models/misc.types';
 import {
   ShipEngine,
   ShipFrame,
   ShipModule,
   ShipMount,
   ShipReactor,
-} from '@/api/ship/ship.model';
+} from '@/api/models/ship.model';
 
 export interface ShipyardTransaction {
   waypointSymbol: string;

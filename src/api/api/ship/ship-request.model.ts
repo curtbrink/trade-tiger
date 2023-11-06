@@ -1,4 +1,4 @@
-import { ShipyardShipType } from '@/api/shipyard/shipyard.model';
+import { ShipyardShipType } from '@/api/models/shipyard.model';
 
 export interface NavigateShipRequest {
   waypointSymbol: string;

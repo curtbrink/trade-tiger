@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Faction } from '@/api/faction/faction.model';
+import { Faction } from '@/api/models/faction.model';
 
 export const useFactionStore = defineStore('faction', {
   state: () => ({

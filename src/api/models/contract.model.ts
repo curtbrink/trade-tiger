@@ -1,4 +1,4 @@
-import { DateString } from '@/api/misc.types';
+import { DateString } from '@/api/models/misc.types';
 
 export enum ContractType {
   Procurement = 'PROCUREMENT',

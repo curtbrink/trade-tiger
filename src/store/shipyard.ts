@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import waypointApi from '@/api/waypoint/waypoint.api';
-import { Shipyard, ShipyardShipType } from '@/api/shipyard/shipyard.model';
+import waypointApi from '@/api/api/waypoint/waypoint.api';
+import { Shipyard, ShipyardShipType } from '@/api/models/shipyard.model';
 import { useShipStore } from '@/store/ship';
-import shipApi from '@/api/ship/ship.api';
+import shipApi from '@/api/api/ship/ship.api';
 import { useAgentStore } from '@/store/agent';
 
 export const useShipyardStore = defineStore('shipyard', {

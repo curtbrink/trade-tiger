@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ContractPayment } from '@/api/contract/contract.model';
+import { ContractPayment } from '@/api/models/contract.model';
 
 const props = defineProps<{
   payout: ContractPayment;

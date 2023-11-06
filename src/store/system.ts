@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { iteratePagedData } from '@/api/misc.types';
-import { Waypoint } from '@/api/waypoint/waypoint.model';
-import waypointApi from '@/api/waypoint/waypoint.api';
+import { iteratePagedData } from '@/api/models/misc.types';
+import { Waypoint } from '@/api/models/waypoint.model';
+import waypointApi from '@/api/api/waypoint/waypoint.api';
 import { useShipStore } from '@/store/ship';
 
 export const useSystemStore = defineStore('system', {

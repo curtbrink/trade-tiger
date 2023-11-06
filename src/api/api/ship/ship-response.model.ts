@@ -1,6 +1,6 @@
-import { Ship, ShipFuel, ShipNavigation } from '@/api/ship/ship.model';
-import { Agent } from '@/api/agent/agent.model';
-import { ShipyardTransaction } from '@/api/shipyard/shipyard.model';
+import { Ship, ShipFuel, ShipNavigation } from '@/api/models/ship.model';
+import { Agent } from '@/api/models/agent.model';
+import { ShipyardTransaction } from '@/api/models/shipyard.model';
 
 interface OrbitDockShipResponse {
   nav: ShipNavigation;

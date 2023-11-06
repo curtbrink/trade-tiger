@@ -1,13 +1,13 @@
 // Utilities
 import { defineStore } from 'pinia';
-import registerApi from '@/api/register/register.api';
-import { FactionName } from '@/api/faction/faction-name.enum';
-import { Agent } from '@/api/agent/agent.model';
+import registerApi from '@/api/api/register/register.api';
+import { FactionName } from '@/api/models/faction-name.enum';
+import { Agent } from '@/api/models/agent.model';
 import authService from '@/services/auth.service';
 import { useShipStore } from '@/store/ship';
 import { useFactionStore } from '@/store/faction';
 import { useContractStore } from '@/store/contract';
-import agentApi from '@/api/agent/agent.api';
+import agentApi from '@/api/api/agent/agent.api';
 
 export const useAgentStore = defineStore('agent', {
   state: () => ({

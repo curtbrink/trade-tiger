@@ -1,5 +1,5 @@
-import { Waypoint } from '@/api/waypoint/waypoint.model';
-import { DateString } from '@/api/misc.types';
+import { Waypoint } from '@/api/models/waypoint.model';
+import { DateString } from '@/api/models/misc.types';
 
 export enum ShipRole {
   Fabricator = 'FABRICATOR',

@@ -28,8 +28,8 @@
 </template>
 
 <script lang="ts" setup>
-import { prettyNumber } from '@/api/misc.types';
-import { ShipyardShip } from '@/api/shipyard/shipyard.model';
+import { prettyNumber } from '@/api/models/misc.types';
+import { ShipyardShip } from '@/api/models/shipyard.model';
 import { useShipyardStore } from '@/store/shipyard';
 
 const props = defineProps<{

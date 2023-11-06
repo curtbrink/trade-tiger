@@ -1,13 +1,16 @@
-import spacetradersApi from '@/api/spacetraders.api';
-import { PagedResponseData, ResponseData } from '@/api/misc.types';
-import { Waypoint } from '@/api/waypoint/waypoint.model';
-import { Shipyard } from '@/api/shipyard/shipyard.model';
+import spacetradersApi from '@/api/api/spacetraders.api';
+import { PagedResponseData, ResponseData } from '@/api/models/misc.types';
+import { Waypoint } from '@/api/models/waypoint.model';
+import { Shipyard } from '@/api/models/shipyard.model';
+import { Market } from '@/api/models/market.model';
 
 const waypointApi = {
   getWaypointsForSystem: (system: string, limit: number, page: number) =>
     `systems/${system}/waypoints?page=${page}&limit=${limit}`,
   getShipyardForWaypoint: (system: string, waypoint: string) =>
     `systems/${system}/waypoints/${waypoint}/shipyard`,
+  getMarketForWaypoint: (system: string, waypoint: string) =>
+    `systems/${system}/waypoints/${waypoint}/market`,
 };
 
 export default {
@@ -31,6 +34,18 @@ export default {
   ): Promise<ResponseData<Shipyard>> {
     return spacetradersApi
       .get(waypointApi.getShipyardForWaypoint(systemSymbol, waypointSymbol))
+      .then((res) => res.data)
+      .catch((ex) => {
+        console.log(ex);
+      });
+  },
+
+  async getMarketForWaypoint(
+    systemSymbol: string,
+    waypointSymbol: string,
+  ): Promise<ResponseData<Market>> {
+    return spacetradersApi
+      .get(waypointApi.getMarketForWaypoint(systemSymbol, waypointSymbol))
       .then((res) => res.data)
       .catch((ex) => {
         console.log(ex);

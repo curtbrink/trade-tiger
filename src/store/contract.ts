@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { Contract } from '@/api/contract/contract.model';
-import { iteratePagedData } from '@/api/misc.types';
-import contractApi from '@/api/contract/contract.api';
+import { Contract } from '@/api/models/contract.model';
+import { iteratePagedData } from '@/api/models/misc.types';
+import contractApi from '@/api/api/contract/contract.api';
 import { useAgentStore } from '@/store/agent';
 
 export const useContractStore = defineStore('contract', {

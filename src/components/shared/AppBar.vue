@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
-import { prettyNumber } from '@/api/misc.types';
+import { prettyNumber } from '@/api/models/misc.types';
 import { useLoadingSpinner } from '@/store/loading-spinner';
 
 const agentStore = useAgentStore();

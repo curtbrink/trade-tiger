@@ -4,11 +4,11 @@ import {
   ShipFuel,
   ShipNavigation,
   ShipNavigationStatus,
-} from '@/api/ship/ship.model';
-import shipApi from '@/api/ship/ship.api';
-import { iteratePagedData } from '@/api/misc.types';
+} from '@/api/models/ship.model';
+import shipApi from '@/api/api/ship/ship.api';
+import { iteratePagedData } from '@/api/models/misc.types';
 import { useSystemStore } from '@/store/system';
-import { WaypointTraitSymbol } from '@/api/waypoint/waypoint.model';
+import { WaypointTraitSymbol } from '@/api/models/waypoint.model';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({

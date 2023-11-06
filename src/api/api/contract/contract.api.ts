@@ -1,7 +1,7 @@
-import spacetradersApi from '@/api/spacetraders.api';
-import { PagedResponseData, ResponseData } from '@/api/misc.types';
-import { Contract } from '@/api/contract/contract.model';
-import { AcceptContractResponse } from '@/api/contract/contract-response.model';
+import spacetradersApi from '@/api/api/spacetraders.api';
+import { PagedResponseData, ResponseData } from '@/api/models/misc.types';
+import { Contract } from '@/api/models/contract.model';
+import { AcceptContractResponse } from '@/api/api/contract/contract-response.model';
 
 const contractApi = {
   getMyContracts: (limit: number, page: number) =>

@@ -38,7 +38,7 @@
 import { useSystemStore } from '@/store/system';
 import { onBeforeMount } from 'vue';
 import { useShipStore } from '@/store/ship';
-import { Waypoint } from '@/api/waypoint/waypoint.model';
+import { Waypoint } from '@/api/models/waypoint.model';
 
 const systemStore = useSystemStore();
 const shipStore = useShipStore();

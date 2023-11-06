@@ -1,18 +1,18 @@
-import spacetradersApi from '@/api/spacetraders.api';
-import { PagedResponseData, ResponseData } from '@/api/misc.types';
-import { Ship } from '@/api/ship/ship.model';
+import spacetradersApi from '@/api/api/spacetraders.api';
+import { PagedResponseData, ResponseData } from '@/api/models/misc.types';
+import { Ship } from '@/api/models/ship.model';
 import {
   DockShipResponse,
   NavigateShipResponse,
   OrbitShipResponse,
   PurchaseShipResponse,
   RefreshNavResponse,
-} from '@/api/ship/ship-response.model';
+} from '@/api/api/ship/ship-response.model';
 import {
   NavigateShipRequest,
   PurchaseShipRequest,
-} from '@/api/ship/ship-request.model';
-import { ShipyardShipType } from '@/api/shipyard/shipyard.model';
+} from '@/api/api/ship/ship-request.model';
+import { ShipyardShipType } from '@/api/models/shipyard.model';
 
 const shipApi = {
   getMyShips: (limit: number, page: number) =>

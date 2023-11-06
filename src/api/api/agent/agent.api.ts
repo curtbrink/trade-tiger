@@ -1,6 +1,6 @@
-import { ResponseData } from '@/api/misc.types';
-import spacetradersApi from '@/api/spacetraders.api';
-import { Agent } from '@/api/agent/agent.model';
+import { ResponseData } from '@/api/models/misc.types';
+import spacetradersApi from '@/api/api/spacetraders.api';
+import { Agent } from '@/api/models/agent.model';
 
 const agentApi = {
   getMyAgent: () => 'my/agent',

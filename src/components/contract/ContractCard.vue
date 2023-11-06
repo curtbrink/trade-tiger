@@ -66,11 +66,11 @@
 </template>
 
 <script lang="ts" setup>
-import { Contract, ContractDelivery } from '@/api/contract/contract.model';
+import { Contract, ContractDelivery } from '@/api/models/contract.model';
 import { computed } from 'vue';
 import ContractPayout from '@/components/contract/ContractPayout.vue';
 import { useContractStore } from '@/store/contract';
-import { prettyDate } from '@/api/misc.types';
+import { prettyDate } from '@/api/models/misc.types';
 
 const props = defineProps<{
   contract: Contract;

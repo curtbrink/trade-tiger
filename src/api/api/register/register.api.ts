@@ -1,7 +1,7 @@
-import { RegisterRequest } from '@/api/register/register-request.model';
-import spacetradersApi from '@/api/spacetraders.api';
-import { RegisterResponse } from '@/api/register/register-response.model';
-import { ResponseData } from '@/api/misc.types';
+import { RegisterRequest } from '@/api/api/register/register-request.model';
+import spacetradersApi from '@/api/api/spacetraders.api';
+import { RegisterResponse } from '@/api/api/register/register-response.model';
+import { ResponseData } from '@/api/models/misc.types';
 
 const registerApi = {
   register: () => 'register',
