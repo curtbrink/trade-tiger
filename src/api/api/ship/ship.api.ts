@@ -7,6 +7,7 @@ import {
   OrbitShipResponse,
   PurchaseShipResponse,
   RefreshNavResponse,
+  RefuelShipResponse,
 } from '@/api/api/ship/ship-response.model';
 import {
   NavigateShipRequest,
@@ -22,6 +23,7 @@ const shipApi = {
   navigateShip: (symbol: string) => `my/ships/${symbol}/navigate`,
   purchaseShip: () => `my/ships`,
   refreshNav: (symbol: string) => `my/ships/${symbol}/nav`,
+  refuelShip: (symbol: string) => `my/ships/${symbol}/refuel`,
 };
 
 export default {
@@ -87,6 +89,15 @@ export default {
   refreshShipNav(shipSymbol: string): Promise<RefreshNavResponse> {
     return spacetradersApi
       .get(shipApi.refreshNav(shipSymbol))
+      .then((res) => res.data)
+      .catch((ex) => {
+        console.log(ex);
+      });
+  },
+
+  refuelShip(shipSymbol: string): Promise<ResponseData<RefuelShipResponse>> {
+    return spacetradersApi
+      .post(shipApi.refuelShip(shipSymbol))
       .then((res) => res.data)
       .catch((ex) => {
         console.log(ex);

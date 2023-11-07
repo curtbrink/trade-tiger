@@ -82,7 +82,7 @@
               block
               variant="outlined"
               prepend-icon="mdi-barrel"
-              @click="console.log('refueling!')"
+              @click="shipStore.refuelShip(ship.symbol)"
               :disabled="!canRefuel(ship)"
               >Refuel</v-btn
             >

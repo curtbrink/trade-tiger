@@ -8,6 +8,7 @@ import {
 import shipApi from '@/api/api/ship/ship.api';
 import { iteratePagedData } from '@/api/models/misc.types';
 import { useCurrentLocationStore } from '@/store/current-location';
+import { useAgentStore } from '@/store/agent';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({
@@ -75,6 +76,12 @@ export const useShipStore = defineStore('ship', {
     async refreshNav(shipSymbol: string) {
       const response = await shipApi.refreshShipNav(shipSymbol);
       await this.patchNav(shipSymbol, response.data);
+    },
+    async refuelShip(shipSymbol: string) {
+      const response = await shipApi.refuelShip(shipSymbol);
+      const agentStore = useAgentStore();
+      agentStore.setAgent(response.data.agent);
+      await this.patchFuel(shipSymbol, response.data.fuel);
     },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
       await this.patchShipProperty(shipSymbol, 'nav', newNav);
