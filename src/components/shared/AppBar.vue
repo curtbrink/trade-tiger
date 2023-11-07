@@ -16,14 +16,15 @@
             </div>
           </v-col>
           <v-col cols="3">
-            <div v-if="shipStore.selectedShip">
-              <v-icon>mdi-flare</v-icon> {{ shipStore.currentSystem }}
+            <div v-if="currentLocationStore.currentWaypoint">
+              <v-icon>mdi-flare</v-icon>
+              {{ currentLocationStore.currentSystemSymbol }}
             </div>
           </v-col>
           <v-col cols="3">
-            <div v-if="shipStore.selectedShip">
+            <div v-if="currentLocationStore.currentWaypoint">
               <v-icon>mdi-map-marker</v-icon>
-              {{ shipStore.currentWaypoint }}
+              {{ currentLocationStore.currentWaypointSymbol }}
             </div>
           </v-col>
         </v-row>
@@ -34,12 +35,12 @@
 
 <script setup lang="ts">
 import { useAgentStore } from '@/store/agent';
-import { useShipStore } from '@/store/ship';
 import { prettyNumber } from '@/api/models/misc.types';
 import { useLoadingSpinner } from '@/store/loading-spinner';
+import { useCurrentLocationStore } from '@/store/current-location';
 
 const agentStore = useAgentStore();
-const shipStore = useShipStore();
+const currentLocationStore = useCurrentLocationStore();
 const loadingSpinner = useLoadingSpinner();
 </script>
 

@@ -7,8 +7,7 @@ import {
 } from '@/api/models/ship.model';
 import shipApi from '@/api/api/ship/ship.api';
 import { iteratePagedData } from '@/api/models/misc.types';
-import { useSystemStore } from '@/store/system';
-import { WaypointTraitSymbol } from '@/api/models/waypoint.model';
+import { useCurrentLocationStore } from '@/store/current-location';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({
@@ -18,21 +17,28 @@ export const useShipStore = defineStore('ship', {
   actions: {
     async getAllShips() {
       this.ships = await iteratePagedData(shipApi.getMyShips);
-      this.selectedShip = this.ships[0] || undefined;
+      await this.selectShip();
     },
     async ensureLoaded() {
-      if (this.ships.length) {
-        return Promise.resolve();
+      if (!this.selectedShip) {
+        if (!this.ships.length) {
+          return this.getAllShips();
+        } else {
+          return this.selectShip();
+        }
       }
-      return this.getAllShips();
+      return;
     },
-    async selectShip(symbol: string) {
-      this.selectedShip =
-        this.ships.find((it) => it.symbol === symbol) || this.ships[0];
-      const systemStore = useSystemStore();
-      await systemStore.getWaypointsForSystem(
-        this.selectedShip.nav.systemSymbol,
-      );
+    async selectShip(symbol?: string) {
+      if (!symbol) {
+        this.selectedShip = this.ships[0];
+      } else {
+        this.selectedShip =
+          this.ships.find((it) => it.symbol === symbol) || this.ships[0];
+      }
+
+      const currentLocationStore = useCurrentLocationStore();
+      await currentLocationStore.updateCurrentLocation(this.selectedShip.nav);
     },
     async addShip(ship: Ship) {
       this.ships.push(ship);
@@ -62,6 +68,9 @@ export const useShipStore = defineStore('ship', {
       const { nav, fuel } = navigationResponse.data;
       await this.patchNav(this.selectedShip.symbol, nav);
       await this.patchFuel(this.selectedShip.symbol, fuel);
+
+      const currentLocationStore = useCurrentLocationStore();
+      await currentLocationStore.updateCurrentLocation(nav);
     },
     async refreshNav(shipSymbol: string) {
       const response = await shipApi.refreshShipNav(shipSymbol);
@@ -92,28 +101,5 @@ export const useShipStore = defineStore('ship', {
   },
   getters: {
     totalShips: (state) => state.ships.length,
-    currentSystem(): string | undefined {
-      return this.selectedShip?.nav.systemSymbol;
-    },
-    currentWaypoint(): string | undefined {
-      return this.selectedShip?.nav.waypointSymbol;
-    },
-    shipyardAccessible(): boolean {
-      if (!this.selectedShip) {
-        return false;
-      }
-      if (this.selectedShip.nav.status !== ShipNavigationStatus.Docked) {
-        return false;
-      }
-      const systemStore = useSystemStore();
-      const waypoint = systemStore.systemWaypoints.find(
-        (it) => it.symbol === this.selectedShip!.nav.waypointSymbol,
-      );
-      return (
-        waypoint?.traits
-          .map((it) => it.symbol)
-          .includes(WaypointTraitSymbol.Shipyard) || false
-      );
-    },
   },
 });

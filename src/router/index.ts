@@ -12,6 +12,7 @@ import { useShipStore } from '@/store/ship';
 import { useContractStore } from '@/store/contract';
 import { useSystemStore } from '@/store/system';
 import { useShipyardStore } from '@/store/shipyard';
+import { useCurrentLocationStore } from '@/store/current-location';
 
 type DataTag = 'agent' | 'contract' | 'ship';
 
@@ -88,10 +89,6 @@ router.beforeEach(async (to, from) => {
       await contractStore.ensureLoaded();
       const shipStore = useShipStore();
       await shipStore.ensureLoaded();
-      const systemStore = useSystemStore();
-      await systemStore.ensureLoaded();
-      const shipyardStore = useShipyardStore();
-      await shipyardStore.ensureLoaded();
     }
   }
 });

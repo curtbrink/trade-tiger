@@ -45,22 +45,14 @@
     <v-card-actions>
       <v-container>
         <v-row>
-          <v-col v-if="isSelected(ship)" cols="12">
-            <v-btn
-              block
-              variant="outlined"
-              disabled
-              prepend-icon="mdi-check-bold"
-              >Selected</v-btn
-            >
-          </v-col>
-          <v-col v-else cols="12">
+          <v-col cols="12">
             <v-btn
               block
               variant="outlined"
               prepend-icon="mdi-check-bold"
+              :disabled="isSelected(ship)"
               @click="shipStore.selectShip(ship.symbol)"
-              >Select</v-btn
+              >{{ isSelected(ship) ? 'Selected' : 'Select' }}</v-btn
             >
           </v-col>
         </v-row>
@@ -84,7 +76,18 @@
             >
           </v-col>
         </v-row>
-        <v-row> </v-row>
+        <v-row v-if="showRefuel(ship)">
+          <v-col cols="12">
+            <v-btn
+              block
+              variant="outlined"
+              prepend-icon="mdi-barrel"
+              @click="console.log('refueling!')"
+              :disabled="!canRefuel(ship)"
+              >Refuel</v-btn
+            >
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-actions>
   </v-card>
@@ -95,12 +98,14 @@ import { Ship, ShipNavigationStatus } from '@/api/models/ship.model';
 import { useShipStore } from '@/store/ship';
 import dayjs from 'dayjs';
 import { prettyDate } from '@/api/models/misc.types';
+import { useMarketStore } from '@/store/market';
 
 const props = defineProps<{
   ship: Ship;
 }>();
 
 const shipStore = useShipStore();
+const marketStore = useMarketStore();
 
 function isSelected(ship: Ship) {
   return shipStore.selectedShip?.symbol === ship.symbol;
@@ -117,7 +122,12 @@ function getRouteProgress(ship: Ship) {
   const elapsedSeconds = now.diff(depart, 'second');
   return (elapsedSeconds / totalSeconds) * 100;
 }
-function canRefuel(ship: Ship) {}
+function showRefuel(ship: Ship) {
+  return isSelected(ship) && marketStore.canRefuel;
+}
+function canRefuel(ship: Ship) {
+  return showRefuel(ship) && ship.fuel.current < ship.fuel.capacity;
+}
 </script>
 
 <style>
