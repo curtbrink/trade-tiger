@@ -7,6 +7,7 @@ import ContractView from '@/views/Contract.vue';
 import ShipView from '@/views/Ship.vue';
 import SystemView from '@/views/System.vue';
 import ShipyardView from '@/views/Shipyard.vue';
+import ControlCenterView from '@/views/ControlCenter.vue';
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
 import { useContractStore } from '@/store/contract';
@@ -56,6 +57,13 @@ const routes = [
   {
     path: '/shipyard',
     component: ShipyardView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/controls',
+    component: ControlCenterView,
     meta: {
       requiresAuth: true,
     },

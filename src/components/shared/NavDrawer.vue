@@ -9,6 +9,11 @@
         :title="item.label"></v-list-item>
       <v-divider />
       <v-list-item
+        v-if="shipStore.selectedShip"
+        :to="{ path: '/controls' }"
+        prepend-icon="mdi-rocket-launch"
+        title="Cockpit" />
+      <v-list-item
         v-if="shipyardStore.shipyardAccessible"
         :to="{ path: '/shipyard' }"
         prepend-icon="mdi-rocket-launch"
@@ -20,9 +25,11 @@
 <script setup lang="ts">
 import { useAgentStore } from '@/store/agent';
 import { useShipyardStore } from '@/store/shipyard';
+import { useShipStore } from '@/store/ship';
 
 const agentStore = useAgentStore();
 const shipyardStore = useShipyardStore();
+const shipStore = useShipStore();
 
 const authItems = [
   {
