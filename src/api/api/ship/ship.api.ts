@@ -7,6 +7,7 @@ import {
   NavigateShipResponse,
   OrbitShipResponse,
   PurchaseShipResponse,
+  RefreshCooldownResponse,
   RefreshNavResponse,
   RefuelShipResponse,
 } from '@/api/api/ship/ship-response.model';
@@ -26,6 +27,7 @@ const shipApi = {
   refreshNav: (symbol: string) => `my/ships/${symbol}/nav`,
   refuelShip: (symbol: string) => `my/ships/${symbol}/refuel`,
   extractResources: (symbol: string) => `my/ships/${symbol}/extract`,
+  refreshCooldown: (symbol: string) => `my/ships/${symbol}/cooldown`,
 };
 
 export default {
@@ -90,6 +92,12 @@ export default {
   ): Promise<ResponseData<ExtractResourcesResponse>> {
     return spacetradersApi
       .post(shipApi.extractResources(shipSymbol))
+      .then((res) => res.data);
+  },
+
+  refreshShipCooldown(shipSymbol: string): Promise<RefreshCooldownResponse> {
+    return spacetradersApi
+      .get(shipApi.refreshCooldown(shipSymbol))
       .then((res) => res.data);
   },
 };

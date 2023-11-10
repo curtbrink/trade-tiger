@@ -77,5 +77,7 @@ const canDock = computed(
 );
 
 const showExtract = computed(() => true); // todo where can you extract?
-const canExtract = computed(() => true); // todo when can't you extract?
+const canExtract = computed(
+  () => showExtract.value && ship.cooldown.totalSeconds === 0,
+);
 </script>

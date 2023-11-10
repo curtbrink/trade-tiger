@@ -31,6 +31,10 @@ export interface RefreshNavResponse {
   data: ShipNavigation; // intentional. doesn't seem to follow the ResponseData pattern
 }
 
+export interface RefreshCooldownResponse {
+  data: ShipCooldown;
+}
+
 export interface RefuelShipResponse {
   agent: Agent;
   fuel: ShipFuel;

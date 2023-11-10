@@ -82,12 +82,13 @@ export const useShipStore = defineStore('ship', {
       await currentLocationStore.updateCurrentLocation(nav);
     },
     async refreshNav(shipSymbol: string) {
-      console.log('refreshNav');
       const response = await shipApi.refreshShipNav(shipSymbol);
-      const ship = this.ships.find((it) => it.symbol === shipSymbol);
-      if (ship) {
-        ship.nav = response.data;
-      }
+      await this.patchShipProperty(shipSymbol, 'nav', response.data);
+    },
+    async refreshCooldown(shipSymbol: string) {
+      const response = await shipApi.refreshShipCooldown(shipSymbol);
+      const newCooldown = response.data ? response.data : { totalSeconds: 0 };
+      await this.patchShipProperty(shipSymbol, 'cooldown', newCooldown);
     },
     async refuelShip(shipSymbol: string) {
       const response = await shipApi.refuelShip(shipSymbol);

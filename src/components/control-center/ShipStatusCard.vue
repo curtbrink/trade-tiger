@@ -115,6 +115,9 @@ const status = computed(() => {
 });
 
 const cooldownProgressPercent = computed(() => {
+  if (status.value !== 'Cooldown') {
+    return 0;
+  }
   const expiration = dayjs(selectedShip.cooldown.expiration);
   const start = expiration.subtract(
     selectedShip.cooldown.totalSeconds,
@@ -143,6 +146,11 @@ const fuelCapacity = computed(() => selectedShip.fuel.capacity);
 watchEffect(async () => {
   if (routeProgressPercent.value > 100) {
     await shipStore.refreshNav(selectedShip.symbol);
+  }
+});
+watchEffect(async () => {
+  if (cooldownProgressPercent.value > 100) {
+    await shipStore.refreshCooldown(selectedShip.symbol);
   }
 });
 </script>
