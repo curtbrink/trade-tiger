@@ -10,6 +10,7 @@ import { iteratePagedData } from '@/api/models/misc.types';
 import { useCurrentLocationStore } from '@/store/current-location';
 import { useAgentStore } from '@/store/agent';
 import browserStorageService from '@/services/browser-storage.service';
+import { useSnackbar } from '@/store/snackbar';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({
@@ -49,6 +50,9 @@ export const useShipStore = defineStore('ship', {
     async dockShip(symbol: string) {
       const response = await shipApi.dockShip(symbol);
       await this.patchNav(symbol, response.data.nav);
+
+      const snackbar = useSnackbar();
+      snackbar.showError('you just docked the ship!');
     },
     async orbitShip(symbol: string) {
       const response = await shipApi.orbitShip(symbol);

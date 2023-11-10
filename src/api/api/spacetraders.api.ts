@@ -9,18 +9,11 @@ const instance = axios.create({
 
 instance.interceptors.response.use(undefined, async (error) => {
   const apiError = error.response?.data?.error;
-
-  // if (error.response?.status === 429) {
-  //   const retryAfter = error.response.headers['retry-after'];
-  //
-  //   await new Promise((resolve) => {
-  //     setTimeout(resolve, retryAfter * 1000);
-  //   });
-  //
-  //   return instance.request(error.config);
-  // }
-
-  return error.response;
+  if (apiError) {
+    const errorMsg = `${apiError.code} - ${apiError.message}`;
+    throw new Error(errorMsg);
+  }
+  throw error;
 });
 
 instance.interceptors.request.use(

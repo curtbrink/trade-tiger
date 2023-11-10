@@ -8,11 +8,6 @@ const agentApi = {
 
 export default {
   getMyAgent(): Promise<ResponseData<Agent>> {
-    return spacetradersApi
-      .get(agentApi.getMyAgent())
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+    return spacetradersApi.get(agentApi.getMyAgent()).then((res) => res.data);
   },
 };

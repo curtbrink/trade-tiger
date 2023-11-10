@@ -8,6 +8,7 @@ import { useShipStore } from '@/store/ship';
 import { useFactionStore } from '@/store/faction';
 import { useContractStore } from '@/store/contract';
 import agentApi from '@/api/api/agent/agent.api';
+import { useSnackbar } from '@/store/snackbar';
 
 export const useAgentStore = defineStore('agent', {
   state: () => ({
@@ -21,8 +22,10 @@ export const useAgentStore = defineStore('agent', {
       if (this.agent) {
         return Promise.resolve();
       }
-      const agentResponse = await agentApi.getMyAgent();
-      this.agent = agentResponse.data;
+      try {
+        const agentResponse = await agentApi.getMyAgent();
+        this.agent = agentResponse.data;
+      } catch (e) {}
     },
     async register(name: string, faction: FactionName) {
       const newAgentResponse = await registerApi.register({

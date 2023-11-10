@@ -33,28 +33,19 @@ export default {
   ): Promise<PagedResponseData<Ship>> {
     return spacetradersApi
       .get(shipApi.getMyShips(limit, page))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   dockShip(shipSymbol: string): Promise<ResponseData<DockShipResponse>> {
     return spacetradersApi
       .post(shipApi.dockShip(shipSymbol))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   orbitShip(shipSymbol: string): Promise<ResponseData<OrbitShipResponse>> {
     return spacetradersApi
       .post(shipApi.orbitShip(shipSymbol))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   navigateShip(
@@ -65,10 +56,7 @@ export default {
       .post(shipApi.navigateShip(shipSymbol), {
         waypointSymbol,
       } as NavigateShipRequest)
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   purchaseShip(
@@ -80,27 +68,18 @@ export default {
         shipType,
         waypointSymbol,
       } as PurchaseShipRequest)
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   refreshShipNav(shipSymbol: string): Promise<RefreshNavResponse> {
     return spacetradersApi
       .get(shipApi.refreshNav(shipSymbol))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   refuelShip(shipSymbol: string): Promise<ResponseData<RefuelShipResponse>> {
     return spacetradersApi
       .post(shipApi.refuelShip(shipSymbol))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 };

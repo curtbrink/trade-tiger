@@ -16,10 +16,7 @@ export default {
   ): Promise<PagedResponseData<Contract>> {
     return spacetradersApi
       .get(contractApi.getMyContracts(limit, page))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   acceptContract(
@@ -27,9 +24,6 @@ export default {
   ): Promise<ResponseData<AcceptContractResponse>> {
     return spacetradersApi
       .post(contractApi.acceptContract(contractId))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 };

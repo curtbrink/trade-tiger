@@ -8,6 +8,7 @@
           <router-view />
         </suspense>
       </v-container>
+      <TradeTigerSnackbar />
     </v-main>
   </v-app>
 </template>
@@ -23,6 +24,8 @@ import { useContractStore } from '@/store/contract';
 import { useFactionStore } from '@/store/faction';
 import { useSystemStore } from '@/store/system';
 import { useShipyardStore } from '@/store/shipyard';
+import TradeTigerSnackbar from '@/components/shared/TradeTigerSnackbar.vue';
+import { useSnackbar } from '@/store/snackbar';
 
 onBeforeMount(() => {
   document.title = 'Trade Tiger';
@@ -42,7 +45,8 @@ onBeforeMount(() => {
       loadingSpinner.setLoaded();
     });
 
-    onError(() => {
+    onError((e: any) => {
+      useSnackbar().showError(e);
       loadingSpinner.setLoaded();
     });
   };

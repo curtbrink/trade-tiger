@@ -32,7 +32,7 @@
               variant="outlined"
               prepend-icon="mdi-barrel"
               @click="shipStore.refuelShip(ship.symbol)"
-              :disabled="!canRefuel"
+              :disabled="false && !canRefuel"
               >Refuel</v-btn
             >
           </v-col>

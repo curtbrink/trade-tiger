@@ -13,9 +13,6 @@ export default {
   ): Promise<ResponseData<RegisterResponse>> {
     return spacetradersApi
       .post(registerApi.register(), registerRequest)
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 };

@@ -21,10 +21,7 @@ export default {
     return (limit, page) => {
       return spacetradersApi
         .get(waypointApi.getWaypointsForSystem(sysId, limit, page))
-        .then((res) => res.data)
-        .catch((ex) => {
-          console.log(ex);
-        });
+        .then((res) => res.data);
     };
   },
 
@@ -34,10 +31,7 @@ export default {
   ): Promise<ResponseData<Shipyard>> {
     return spacetradersApi
       .get(waypointApi.getShipyardForWaypoint(systemSymbol, waypointSymbol))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 
   async getMarketForWaypoint(
@@ -46,9 +40,6 @@ export default {
   ): Promise<ResponseData<Market>> {
     return spacetradersApi
       .get(waypointApi.getMarketForWaypoint(systemSymbol, waypointSymbol))
-      .then((res) => res.data)
-      .catch((ex) => {
-        console.log(ex);
-      });
+      .then((res) => res.data);
   },
 };
