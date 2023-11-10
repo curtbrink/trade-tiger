@@ -74,8 +74,12 @@ export const useShipStore = defineStore('ship', {
       await currentLocationStore.updateCurrentLocation(nav);
     },
     async refreshNav(shipSymbol: string) {
+      console.log('refreshNav');
       const response = await shipApi.refreshShipNav(shipSymbol);
-      await this.patchNav(shipSymbol, response.data);
+      const ship = this.ships.find((it) => it.symbol === shipSymbol);
+      if (ship) {
+        ship.nav = response.data;
+      }
     },
     async refuelShip(shipSymbol: string) {
       const response = await shipApi.refuelShip(shipSymbol);
@@ -84,17 +88,21 @@ export const useShipStore = defineStore('ship', {
       await this.patchFuel(shipSymbol, response.data.fuel);
     },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
+      console.log('patchNav');
       await this.patchShipProperty(shipSymbol, 'nav', newNav);
     },
     async patchFuel(shipSymbol: string, newFuel: ShipFuel) {
       await this.patchShipProperty(shipSymbol, 'fuel', newFuel);
     },
     async patchShipProperty(symbol: string, prop: string, val: any) {
+      console.log('patchShipProperty');
       const ship = this.ships.find((it) => it.symbol === symbol);
       if (!ship) {
+        console.log('no ship for some reason');
         const selectedShipSymbol = this.selectedShip?.symbol;
         await this.reloadAndSelect(selectedShipSymbol);
       } else {
+        console.log('patching property...');
         // @ts-ignore
         ship[prop] = val;
       }

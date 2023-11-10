@@ -31,7 +31,7 @@ export type ShipNavigationRouteWaypoint = Pick<
 
 export interface ShipNavigationRoute {
   destination: ShipNavigationRouteWaypoint;
-  departure: ShipNavigationRouteWaypoint;
+  origin: ShipNavigationRouteWaypoint;
   departureTime: DateString;
   arrival: DateString;
 }
@@ -236,6 +236,13 @@ export interface ShipFuel {
   consumed: ShipFuelConsumption;
 }
 
+export interface ShipCooldown {
+  shipSymbol: string;
+  totalSeconds: number;
+  remainingSeconds: number;
+  expiration: DateString;
+}
+
 export interface Ship {
   symbol: string;
   registration: ShipRegistration;
@@ -248,4 +255,5 @@ export interface Ship {
   mounts: ShipMount[];
   cargo: ShipCargo;
   fuel: ShipFuel;
+  cooldown: ShipCooldown;
 }
