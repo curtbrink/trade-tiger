@@ -24,7 +24,7 @@
           <v-row align="center" justify="center">
             <v-col cols="9">
               <v-progress-linear
-                :model-value="getRouteProgress(selectedShip)"
+                :model-value="routeProgressPercent"
                 height="10"
                 striped
                 color="light-blue" />
@@ -42,13 +42,14 @@
 import { Ship, ShipNavigationStatus } from '@/api/models/ship.model';
 import { prettyDate } from '@/api/models/misc.types';
 import dayjs from 'dayjs';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useShipStore } from '@/store/ship';
 
 const shipStore = useShipStore();
 const selectedShip = shipStore.selectedShip!;
 
 let now = ref(dayjs());
+
 function updateNow() {
   now.value = dayjs();
 }
@@ -56,21 +57,27 @@ onMounted(() => {
   updateNow();
 });
 
-const status = isMoving(selectedShip) ? 'In Transit' : selectedShip.nav.status;
+const status = computed(() => {
+  return selectedShip.nav.status === ShipNavigationStatus.InTransit
+    ? 'In Transit'
+    : selectedShip.nav.status;
+});
 
-function isMoving(ship: Ship) {
-  return ship.nav.status === ShipNavigationStatus.InTransit;
-}
-function getRouteProgress(ship: Ship) {
-  const depart = dayjs(ship.nav.route.departureTime);
-  const arrive = dayjs(ship.nav.route.arrival);
+const routeProgressPercent = computed(() => {
+  if (status.value !== 'In Transit') {
+    return 0;
+  }
+  const depart = dayjs(selectedShip.nav.route.departureTime);
+  const arrive = dayjs(selectedShip.nav.route.arrival);
 
   const totalSeconds = arrive.diff(depart, 'second');
   const elapsedSeconds = now.value.diff(depart, 'second');
-  const percent = (elapsedSeconds / totalSeconds) * 100;
-  if (ship.nav.status === ShipNavigationStatus.InTransit && percent > 100) {
-    shipStore.refreshNav(ship.symbol);
+  return (elapsedSeconds / totalSeconds) * 100;
+});
+
+watchEffect(async () => {
+  if (routeProgressPercent.value > 100) {
+    await shipStore.refreshNav(selectedShip.symbol);
   }
-  return percent;
-}
+});
 </script>

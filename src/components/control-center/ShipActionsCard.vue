@@ -23,14 +23,14 @@
             >
           </v-col>
         </v-row>
-        <v-row v-if="showRefuel(ship)">
+        <v-row v-if="showRefuel">
           <v-col cols="12">
             <v-btn
               block
               variant="outlined"
               prepend-icon="mdi-barrel"
               @click="shipStore.refuelShip(ship.symbol)"
-              :disabled="!canRefuel(ship)"
+              :disabled="!canRefuel"
               >Refuel</v-btn
             >
           </v-col>
@@ -40,25 +40,21 @@
   </v-card>
 </template>
 <script lang="ts" setup>
-import { Ship } from '@/api/models/ship.model';
 import { useShipStore } from '@/store/ship';
 import { useMarketStore } from '@/store/market';
-
-const props = defineProps<{
-  ship: Ship;
-}>();
+import { computed } from 'vue';
+import { ShipNavigationStatus } from '@/api/models/ship.model';
 
 const shipStore = useShipStore();
 const marketStore = useMarketStore();
 
-function isSelected(ship: Ship) {
-  return shipStore.selectedShip?.symbol === ship.symbol;
-}
+const ship = shipStore.selectedShip!;
 
-function showRefuel(ship: Ship) {
-  return isSelected(ship) && marketStore.canRefuel;
-}
-function canRefuel(ship: Ship) {
-  return showRefuel(ship) && ship.fuel.current < ship.fuel.capacity;
-}
+const showRefuel = computed(() => marketStore.canRefuel);
+const canRefuel = computed(
+  () =>
+    showRefuel.value &&
+    ship.nav.status === ShipNavigationStatus.Docked &&
+    ship.fuel.current < ship.fuel.capacity,
+);
 </script>

@@ -5,7 +5,7 @@
         <ShipStatusCard />
       </v-col>
       <v-col cols="6">
-        <ShipActionsCard :ship="ship" />
+        <ShipActionsCard />
       </v-col>
     </v-row>
     <v-row>
