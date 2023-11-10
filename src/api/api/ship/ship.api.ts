@@ -24,6 +24,7 @@ const shipApi = {
   purchaseShip: () => `my/ships`,
   refreshNav: (symbol: string) => `my/ships/${symbol}/nav`,
   refuelShip: (symbol: string) => `my/ships/${symbol}/refuel`,
+  extractResources: (symbol: string) => `my/ships/${symbol}/extract`,
 };
 
 export default {
@@ -80,6 +81,12 @@ export default {
   refuelShip(shipSymbol: string): Promise<ResponseData<RefuelShipResponse>> {
     return spacetradersApi
       .post(shipApi.refuelShip(shipSymbol))
+      .then((res) => res.data);
+  },
+
+  extractResources(shipSymbol: string): Promise<void> {
+    return spacetradersApi
+      .post(shipApi.extractResources(shipSymbol))
       .then((res) => res.data);
   },
 };

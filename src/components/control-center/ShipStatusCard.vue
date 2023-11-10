@@ -50,12 +50,38 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-row v-if="status === 'Cooldown'">
+        <v-col>
+          <v-card variant="outlined">
+            <v-card-title>Cooldown</v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  On cooldown until: {{ selectedShip.cooldown.expiration }}
+                </v-col>
+              </v-row>
+              <v-row align="center" justify="center">
+                <v-col cols="9">
+                  <v-progress-linear
+                    :model-value="cooldownProgressPercent"
+                    height="10"
+                    striped
+                    color="light-blue" />
+                </v-col>
+                <v-col cols="3">
+                  <v-btn @click="updateNow">Refresh</v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
 <script lang="ts" setup>
 import { ShipNavigationStatus } from '@/api/models/ship.model';
-import { prettyDate } from '@/api/models/misc.types';
+import { DateString, prettyDate } from '@/api/models/misc.types';
 import dayjs from 'dayjs';
 import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useShipStore } from '@/store/ship';
@@ -73,6 +99,9 @@ onMounted(() => {
 });
 
 const status = computed(() => {
+  if (selectedShip.cooldown.totalSeconds > 0) {
+    return 'Cooldown';
+  }
   switch (selectedShip.nav.status) {
     case ShipNavigationStatus.InTransit:
       return 'In Transit';
@@ -83,6 +112,17 @@ const status = computed(() => {
     default:
       return '';
   }
+});
+
+const cooldownProgressPercent = computed(() => {
+  const expiration = dayjs(selectedShip.cooldown.expiration);
+  const start = expiration.subtract(
+    selectedShip.cooldown.totalSeconds,
+    'second',
+  );
+
+  const elapsedSeconds = now.value.diff(start, 'second');
+  return (elapsedSeconds / selectedShip.cooldown.totalSeconds) * 100;
 });
 
 const routeProgressPercent = computed(() => {
