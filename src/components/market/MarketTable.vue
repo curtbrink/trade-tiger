@@ -4,6 +4,7 @@
     :items="marketStore.currentMarket?.tradeGoods"
     item-value="symbol"
     v-model:sort-by="sortBy"
+    items-per-page="-1"
     class="elevation-1">
     <template v-slot:item.actions="{ item }">
       <div v-if="item.type === 'IMPORT'">
