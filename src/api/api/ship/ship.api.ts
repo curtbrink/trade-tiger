@@ -3,6 +3,7 @@ import { PagedResponseData, ResponseData } from '@/api/models/misc.types';
 import { Ship } from '@/api/models/ship.model';
 import {
   DockShipResponse,
+  ExtractResourcesResponse,
   NavigateShipResponse,
   OrbitShipResponse,
   PurchaseShipResponse,
@@ -84,7 +85,9 @@ export default {
       .then((res) => res.data);
   },
 
-  extractResources(shipSymbol: string): Promise<void> {
+  extractResources(
+    shipSymbol: string,
+  ): Promise<ResponseData<ExtractResourcesResponse>> {
     return spacetradersApi
       .post(shipApi.extractResources(shipSymbol))
       .then((res) => res.data);

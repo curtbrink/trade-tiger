@@ -32,8 +32,20 @@
               variant="outlined"
               prepend-icon="mdi-barrel"
               @click="shipStore.refuelShip(ship.symbol)"
-              :disabled="false && !canRefuel"
+              :disabled="!canRefuel"
               >Refuel</v-btn
+            >
+          </v-col>
+        </v-row>
+        <v-row v-if="showExtract">
+          <v-col cols="12">
+            <v-btn
+              block
+              variant="outlined"
+              prepend-icon="mdi-pickaxe"
+              @click="shipStore.extractResources(ship.symbol)"
+              :disabled="!canExtract"
+              >Extract</v-btn
             >
           </v-col>
         </v-row>
@@ -63,4 +75,7 @@ const canRefuel = computed(
 const canDock = computed(
   () => ship.nav.status !== ShipNavigationStatus.InTransit,
 );
+
+const showExtract = computed(() => true); // todo where can you extract?
+const canExtract = computed(() => true); // todo when can't you extract?
 </script>

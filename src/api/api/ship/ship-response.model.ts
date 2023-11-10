@@ -1,4 +1,10 @@
-import { Ship, ShipFuel, ShipNavigation } from '@/api/models/ship.model';
+import {
+  Ship,
+  ShipCargo,
+  ShipCooldown,
+  ShipFuel,
+  ShipNavigation,
+} from '@/api/models/ship.model';
 import { Agent } from '@/api/models/agent.model';
 import { ShipyardTransaction } from '@/api/models/shipyard.model';
 import { MarketTransaction } from '@/api/models/market.model';
@@ -29,4 +35,20 @@ export interface RefuelShipResponse {
   agent: Agent;
   fuel: ShipFuel;
   transaction: MarketTransaction;
+}
+
+export interface ShipExtractionYield {
+  symbol: string;
+  units: number;
+}
+
+export interface ShipExtraction {
+  shipSymbol: string;
+  yield: ShipExtractionYield;
+}
+
+export interface ExtractResourcesResponse {
+  cooldown: ShipCooldown;
+  extraction: ShipExtraction;
+  cargo: ShipCargo;
 }

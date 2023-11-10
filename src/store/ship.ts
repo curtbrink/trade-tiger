@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import {
   Ship,
+  ShipCargo,
+  ShipCooldown,
   ShipFuel,
   ShipNavigation,
   ShipNavigationStatus,
@@ -93,6 +95,11 @@ export const useShipStore = defineStore('ship', {
       agentStore.setAgent(response.data.agent);
       await this.patchFuel(shipSymbol, response.data.fuel);
     },
+    async extractResources(shipSymbol: string) {
+      const response = await shipApi.extractResources(shipSymbol);
+      await this.patchCooldown(shipSymbol, response.data.cooldown);
+      await this.patchCargo(shipSymbol, response.data.cargo);
+    },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
       console.log('patchNav');
       await this.patchShipProperty(shipSymbol, 'nav', newNav);
@@ -100,15 +107,18 @@ export const useShipStore = defineStore('ship', {
     async patchFuel(shipSymbol: string, newFuel: ShipFuel) {
       await this.patchShipProperty(shipSymbol, 'fuel', newFuel);
     },
+    async patchCooldown(shipSymbol: string, newCooldown: ShipCooldown) {
+      await this.patchShipProperty(shipSymbol, 'cooldown', newCooldown);
+    },
+    async patchCargo(shipSymbol: string, newCargo: ShipCargo) {
+      await this.patchShipProperty(shipSymbol, 'cargo', newCargo);
+    },
     async patchShipProperty(symbol: string, prop: string, val: any) {
-      console.log('patchShipProperty');
       const ship = this.ships.find((it) => it.symbol === symbol);
       if (!ship) {
-        console.log('no ship for some reason');
         const selectedShipSymbol = this.selectedShip?.symbol;
         await this.reloadAndSelect(selectedShipSymbol);
       } else {
-        console.log('patching property...');
         // @ts-ignore
         ship[prop] = val;
       }

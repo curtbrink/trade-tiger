@@ -25,6 +25,7 @@ export const useMarketStore = defineStore('market', {
     canRefuel(): boolean {
       return (
         !!this.currentMarket &&
+        this.currentMarket.tradeGoods &&
         this.currentMarket.tradeGoods
           .map((it) => it.symbol)
           .includes(TradeGoodSymbol.Fuel)
