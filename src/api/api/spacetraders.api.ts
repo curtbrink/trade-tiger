@@ -1,5 +1,5 @@
 import axios from 'axios';
-import authService from '@/services/auth.service';
+import browserStorageService from '@/services/browser-storage.service';
 import pThrottle from 'p-throttle';
 
 const instance = axios.create({
@@ -25,8 +25,9 @@ instance.interceptors.response.use(undefined, async (error) => {
 
 instance.interceptors.request.use(
   async (request) => {
-    if (authService.hasAuthToken()) {
-      request.headers['Authorization'] = 'Bearer ' + authService.getAuthToken();
+    if (browserStorageService.hasAuthToken()) {
+      request.headers['Authorization'] =
+        'Bearer ' + browserStorageService.getAuthToken();
     }
     return request;
   },

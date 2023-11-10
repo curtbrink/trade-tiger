@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import registerApi from '@/api/api/register/register.api';
 import { FactionName } from '@/api/models/faction-name.enum';
 import { Agent } from '@/api/models/agent.model';
-import authService from '@/services/auth.service';
+import browserStorageService from '@/services/browser-storage.service';
 import { useShipStore } from '@/store/ship';
 import { useFactionStore } from '@/store/faction';
 import { useContractStore } from '@/store/contract';
@@ -30,7 +30,7 @@ export const useAgentStore = defineStore('agent', {
         symbol: name,
       });
       const newAgentData = newAgentResponse.data;
-      authService.setAuthToken(newAgentData.token);
+      browserStorageService.setAuthToken(newAgentData.token);
 
       // set agent
       this.agent = newAgentData.agent;

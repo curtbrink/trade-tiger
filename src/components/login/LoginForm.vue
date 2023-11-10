@@ -9,13 +9,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import authService from '@/services/auth.service';
+import browserStorageService from '@/services/browser-storage.service';
 import router from '@/router';
 
 const selectedAuthToken = ref('');
 
 function saveToken() {
-  authService.setAuthToken(selectedAuthToken.value);
+  browserStorageService.setAuthToken(selectedAuthToken.value);
   router.push({ path: '/' });
 }
 </script>

@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import authService from '@/services/auth.service';
+import authService from '@/services/browser-storage.service';
 import router from '@/router';
 import { FactionName } from '@/api/models/faction-name.enum';
 import { useAgentStore } from '@/store/agent';

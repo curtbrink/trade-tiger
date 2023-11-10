@@ -9,6 +9,7 @@ import shipApi from '@/api/api/ship/ship.api';
 import { iteratePagedData } from '@/api/models/misc.types';
 import { useCurrentLocationStore } from '@/store/current-location';
 import { useAgentStore } from '@/store/agent';
+import browserStorageService from '@/services/browser-storage.service';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({
@@ -31,12 +32,13 @@ export const useShipStore = defineStore('ship', {
       return;
     },
     async selectShip(symbol?: string) {
-      if (!symbol) {
-        this.selectedShip = this.ships[0];
-      } else {
-        this.selectedShip =
-          this.ships.find((it) => it.symbol === symbol) || this.ships[0];
-      }
+      const shipIdToFind =
+        symbol ?? browserStorageService.getSelectedShip() ?? '';
+      const foundShip = this.ships.find((it) => it.symbol === shipIdToFind);
+
+      this.selectedShip = foundShip ? foundShip : this.ships[0];
+
+      browserStorageService.setSelectedShip(this.selectedShip.symbol);
 
       const currentLocationStore = useCurrentLocationStore();
       await currentLocationStore.updateCurrentLocation(this.selectedShip.nav);
