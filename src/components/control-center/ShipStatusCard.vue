@@ -5,41 +5,56 @@
       <span class="subtitle">{{ selectedShip.registration.role }}</span>
     </v-card-title>
     <v-card-text>
-      <v-card variant="outlined">
-        <v-card-title>Status</v-card-title>
-        <v-card-text>{{ status }}</v-card-text>
-      </v-card>
-      <v-card variant="outlined" v-if="status === 'In Transit'">
-        <v-card-title>Journey</v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col>
-              Origin: {{ selectedShip.nav.route.origin.symbol }}<br />
-              (time): {{ prettyDate(selectedShip.nav.route.departureTime)
-              }}<br />
-              Destination: {{ selectedShip.nav.route.destination.symbol }}<br />
-              (time): {{ prettyDate(selectedShip.nav.route.arrival) }}
-            </v-col>
-          </v-row>
-          <v-row align="center" justify="center">
-            <v-col cols="9">
-              <v-progress-linear
-                :model-value="routeProgressPercent"
-                height="10"
-                striped
-                color="light-blue" />
-            </v-col>
-            <v-col cols="3">
-              <v-btn @click="updateNow">Refresh</v-btn>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+      <v-row>
+        <v-col cols="6">
+          <v-card variant="outlined">
+            <v-card-title>Status</v-card-title>
+            <v-card-text>{{ status }}</v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card variant="outlined">
+            <v-card-title>Fuel</v-card-title>
+            <v-card-text> {{ currentFuel }} / {{ fuelCapacity }} </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="status === 'In Transit'">
+        <v-col>
+          <v-card variant="outlined">
+            <v-card-title>Journey</v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  Origin: {{ selectedShip.nav.route.origin.symbol }}<br />
+                  (time): {{ prettyDate(selectedShip.nav.route.departureTime)
+                  }}<br />
+                  Destination: {{ selectedShip.nav.route.destination.symbol
+                  }}<br />
+                  (time): {{ prettyDate(selectedShip.nav.route.arrival) }}
+                </v-col>
+              </v-row>
+              <v-row align="center" justify="center">
+                <v-col cols="9">
+                  <v-progress-linear
+                    :model-value="routeProgressPercent"
+                    height="10"
+                    striped
+                    color="light-blue" />
+                </v-col>
+                <v-col cols="3">
+                  <v-btn @click="updateNow">Refresh</v-btn>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
 <script lang="ts" setup>
-import { Ship, ShipNavigationStatus } from '@/api/models/ship.model';
+import { ShipNavigationStatus } from '@/api/models/ship.model';
 import { prettyDate } from '@/api/models/misc.types';
 import dayjs from 'dayjs';
 import { computed, onMounted, ref, watchEffect } from 'vue';
@@ -58,9 +73,16 @@ onMounted(() => {
 });
 
 const status = computed(() => {
-  return selectedShip.nav.status === ShipNavigationStatus.InTransit
-    ? 'In Transit'
-    : selectedShip.nav.status;
+  switch (selectedShip.nav.status) {
+    case ShipNavigationStatus.InTransit:
+      return 'In Transit';
+    case ShipNavigationStatus.Docked:
+      return 'Docked';
+    case ShipNavigationStatus.InOrbit:
+      return 'In Orbit';
+    default:
+      return '';
+  }
 });
 
 const routeProgressPercent = computed(() => {
@@ -74,6 +96,9 @@ const routeProgressPercent = computed(() => {
   const elapsedSeconds = now.value.diff(depart, 'second');
   return (elapsedSeconds / totalSeconds) * 100;
 });
+
+const currentFuel = computed(() => selectedShip.fuel.current);
+const fuelCapacity = computed(() => selectedShip.fuel.capacity);
 
 watchEffect(async () => {
   if (routeProgressPercent.value > 100) {

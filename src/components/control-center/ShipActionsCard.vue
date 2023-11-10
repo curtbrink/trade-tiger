@@ -10,6 +10,7 @@
               variant="outlined"
               prepend-icon="mdi-flare"
               @click="shipStore.dockShip(ship.symbol)"
+              :disabled="!canDock"
               >Dock</v-btn
             >
           </v-col>
@@ -19,6 +20,7 @@
               variant="outlined"
               prepend-icon="mdi-rocket-launch"
               @click="shipStore.orbitShip(ship.symbol)"
+              :disabled="!canDock"
               >Orbit</v-btn
             >
           </v-col>
@@ -56,5 +58,9 @@ const canRefuel = computed(
     showRefuel.value &&
     ship.nav.status === ShipNavigationStatus.Docked &&
     ship.fuel.current < ship.fuel.capacity,
+);
+
+const canDock = computed(
+  () => ship.nav.status !== ShipNavigationStatus.InTransit,
 );
 </script>
