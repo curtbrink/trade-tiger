@@ -24,6 +24,7 @@
 <script lang="ts" setup>
 import { Waypoint } from '@/api/models/waypoint.model';
 import { useShipStore } from '@/store/ship';
+import { useCurrentLocationStore } from '@/store/current-location';
 
 const props = defineProps<{
   waypoints: Waypoint[];
@@ -31,6 +32,18 @@ const props = defineProps<{
 }>();
 
 const shipStore = useShipStore();
+const currentLocationStore = useCurrentLocationStore();
+
+function getDistance(waypoint: Waypoint) {
+  const xDiff =
+    Math.max(waypoint.x, currentLocationStore.currentWaypoint!.x) -
+    Math.min(waypoint.x, currentLocationStore.currentWaypoint!.x);
+  const yDiff =
+    Math.max(waypoint.y, currentLocationStore.currentWaypoint!.y) -
+    Math.min(waypoint.y, currentLocationStore.currentWaypoint!.y);
+
+  return Math.round(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
+}
 
 const headers = [
   { title: 'Waypoint', align: 'center', sortable: true, key: 'symbol' },
@@ -41,6 +54,7 @@ const headers = [
     sortable: false,
     key: 'coordinates',
   },
+  { title: 'Distance', align: 'center', sortable: false, key: 'distance' },
   { title: 'Traits', align: 'center', sortable: false, key: 'traits' },
   { title: 'Actions', align: 'center', sortable: false, key: 'actions' },
 ];
@@ -49,6 +63,7 @@ const formattedItems = props.waypoints.map((it) => ({
   symbol: it.symbol,
   type: it.type,
   coordinates: `( ${it.x}, ${it.y} )`,
+  distance: getDistance(it),
   traits: it.traits.map((trait) => trait.symbol).join(' | '),
 }));
 

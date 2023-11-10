@@ -1,0 +1,53 @@
+<template>
+  <v-data-table
+    :headers="headers"
+    :items="marketStore.currentMarket?.tradeGoods"
+    item-value="symbol"
+    v-model:sort-by="sortBy"
+    class="elevation-1">
+    <template v-slot:item.actions="{ item }">
+      <div v-if="item.type === 'IMPORT'">
+        <v-btn
+          block
+          variant="outlined"
+          prepend-icon="mdi-currency-usd"
+          :disabled="!cargoOwned(item.symbol)"
+          @click="snackbar.showError('you sold a thing')"
+          >Sell All</v-btn
+        >
+      </div>
+    </template>
+  </v-data-table>
+</template>
+<script lang="ts" setup>
+import { useMarketStore } from '@/store/market';
+import { useShipStore } from '@/store/ship';
+import { useSnackbar } from '@/store/snackbar';
+
+const marketStore = useMarketStore();
+const shipStore = useShipStore();
+const shipCargo = shipStore.selectedShip?.cargo;
+const snackbar = useSnackbar();
+
+const headers = [
+  { title: 'Name', align: 'center', sortable: true, key: 'symbol' },
+  { title: 'Type', align: 'center', sortable: false, key: 'type' },
+  { title: 'Supply', align: 'center', sortable: false, key: 'supply' },
+  { title: 'PP', align: 'center', sortable: false, key: 'purchasePrice' },
+  { title: 'SP', align: 'center', sortable: false, key: 'sellPrice' },
+  { title: 'Vol', align: 'center', sortable: false, key: 'tradeVolume' },
+  { title: 'Actions', align: 'center', sortable: false, key: 'actions' },
+];
+
+const sortBy = [
+  {
+    key: 'symbol',
+    order: 'asc',
+  },
+];
+
+function cargoOwned(cargoType: string) {
+  const ownedCargoTypes = shipCargo?.inventory.map((it) => it.symbol) ?? [];
+  return ownedCargoTypes.includes(cargoType);
+}
+</script>

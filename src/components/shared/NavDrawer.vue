@@ -18,6 +18,11 @@
         :to="{ path: '/shipyard' }"
         prepend-icon="mdi-rocket-launch"
         title="Shipyard" />
+      <v-list-item
+        v-if="marketStore.marketAccessible"
+        :to="{ path: '/market' }"
+        prepend-icon="mdi-currency-usd"
+        title="Market" />
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -26,10 +31,12 @@
 import { useAgentStore } from '@/store/agent';
 import { useShipyardStore } from '@/store/shipyard';
 import { useShipStore } from '@/store/ship';
+import { useMarketStore } from '@/store/market';
 
 const agentStore = useAgentStore();
 const shipyardStore = useShipyardStore();
 const shipStore = useShipStore();
+const marketStore = useMarketStore();
 
 const authItems = [
   {

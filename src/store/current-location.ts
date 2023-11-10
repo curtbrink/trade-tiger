@@ -26,12 +26,15 @@ export const useCurrentLocationStore = defineStore('currentLocation', {
   }),
   actions: {
     async updateCurrentLocation(nav: ShipNavigation) {
+      const systemChanged = this.currentSystemSymbol !== nav.systemSymbol;
       this.currentSystemSymbol = nav.systemSymbol;
       this.currentWaypointSymbol = nav.waypointSymbol;
 
-      this.systemWaypoints = await iteratePagedData(
-        waypointApi.getWaypointCallbackForSystem(this.currentSystemSymbol),
-      );
+      if (systemChanged || this.systemWaypoints.length === 0) {
+        this.systemWaypoints = await iteratePagedData(
+          waypointApi.getWaypointCallbackForSystem(this.currentSystemSymbol),
+        );
+      }
       this.currentWaypoint = this.systemWaypoints.find(
         (it) => it.symbol === this.currentWaypointSymbol,
       );

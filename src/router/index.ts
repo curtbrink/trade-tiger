@@ -8,14 +8,10 @@ import ShipView from '@/views/Ship.vue';
 import SystemView from '@/views/System.vue';
 import ShipyardView from '@/views/Shipyard.vue';
 import ControlCenterView from '@/views/ControlCenter.vue';
+import MarketView from '@/views/Market.vue';
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
 import { useContractStore } from '@/store/contract';
-import { useSystemStore } from '@/store/system';
-import { useShipyardStore } from '@/store/shipyard';
-import { useCurrentLocationStore } from '@/store/current-location';
-
-type DataTag = 'agent' | 'contract' | 'ship';
 
 const routes = [
   {
@@ -64,6 +60,13 @@ const routes = [
   {
     path: '/controls',
     component: ControlCenterView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/market',
+    component: MarketView,
     meta: {
       requiresAuth: true,
     },

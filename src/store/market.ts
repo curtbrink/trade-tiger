@@ -20,7 +20,7 @@ export const useMarketStore = defineStore('market', {
   },
   getters: {
     marketAccessible(): boolean {
-      return !!this.currentMarket;
+      return !!this.currentMarket && !!this.currentMarket.tradeGoods;
     },
     canRefuel(): boolean {
       return (
