@@ -88,6 +88,14 @@ export type TradeSymbol =
   | ShipModuleSymbol
   | ShipMountSymbol;
 
+export const TradeSymbolValues = {
+  ...TradeGoodSymbol,
+  ...ShipReactorSymbol,
+  ...ShipEngineSymbol,
+  ...ShipModuleSymbol,
+  ...ShipMountSymbol,
+};
+
 export interface TradeGood {
   symbol: TradeSymbol;
   name: string;
