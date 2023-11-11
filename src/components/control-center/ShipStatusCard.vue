@@ -101,6 +101,9 @@ onMounted(() => {
 });
 
 const status = computed(() => {
+  if (shipStore.autoExtractingShips.includes(selectedShip.symbol)) {
+    return 'Ship is extracting resources until full';
+  }
   if (selectedShip.cooldown.totalSeconds > 0) {
     return 'Cooldown';
   }

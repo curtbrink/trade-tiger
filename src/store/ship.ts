@@ -13,11 +13,13 @@ import { useCurrentLocationStore } from '@/store/current-location';
 import { useAgentStore } from '@/store/agent';
 import browserStorageService from '@/services/browser-storage.service';
 import { useSnackbar } from '@/store/snackbar';
+import { TradeGoodSymbol } from '@/api/models/market.model';
 
 export const useShipStore = defineStore('ship', {
   state: () => ({
     ships: [] as Ship[],
     selectedShip: undefined as Ship | undefined,
+    autoExtractingShips: [] as string[],
   }),
   actions: {
     async getAllShips() {
@@ -96,10 +98,48 @@ export const useShipStore = defineStore('ship', {
       agentStore.setAgent(response.data.agent);
       await this.patchFuel(shipSymbol, response.data.fuel);
     },
-    async extractResources(shipSymbol: string) {
+    async extractResources(shipSymbol: string, auto?: boolean) {
+      const snackbar = useSnackbar();
+      this.autoExtractingShips = this.autoExtractingShips.filter(
+        (it) => it !== shipSymbol,
+      );
       const response = await shipApi.extractResources(shipSymbol);
       await this.patchCooldown(shipSymbol, response.data.cooldown);
       await this.patchCargo(shipSymbol, response.data.cargo);
+      snackbar.showError(
+        `${shipSymbol} received ${response.data.extraction.yield.units} ${response.data.extraction.yield.symbol}`,
+      );
+
+      if (auto) {
+        // nice, let's try automating until full
+
+        // first off, apply cargo whitelist (configurable later but hardcoded for now)
+        const cargoWhitelist = [
+          TradeGoodSymbol.IronOre,
+          TradeGoodSymbol.AluminumOre,
+          TradeGoodSymbol.CopperOre,
+        ];
+        if (!cargoWhitelist.includes(response.data.extraction.yield.symbol)) {
+          // immediately jettison
+          await this.jettisonCargo(
+            shipSymbol,
+            response.data.extraction.yield.symbol,
+            response.data.extraction.yield.units,
+          );
+        } else if (response.data.cargo.units === response.data.cargo.capacity) {
+          // check for full cargo first and stop if full
+          snackbar.showError(
+            `${shipSymbol} has halted extraction due to full cargo!`,
+          );
+          return;
+        }
+
+        this.autoExtractingShips.push(shipSymbol);
+        const timeout = response.data.cooldown.remainingSeconds * 1000 + 1000; // remaining seconds plus one as a buffer
+        setTimeout(async () => {
+          await this.extractResources(shipSymbol, true);
+        }, timeout);
+      }
     },
     async sellCargo(shipSymbol: string, cargoType: string, amount: number) {
       const payload = {
@@ -118,6 +158,10 @@ export const useShipStore = defineStore('ship', {
       };
       const response = await shipApi.jettisonCargo(shipSymbol, payload);
       await this.patchCargo(shipSymbol, response.data.cargo);
+
+      useSnackbar().showError(
+        `${shipSymbol} jettisoned cargo: ${amount} units of ${cargoType}`,
+      );
     },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
       console.log('patchNav');
