@@ -12,7 +12,7 @@
           <v-col cols="3">
             <div v-if="agentStore.loggedIn">
               <v-icon>mdi-currency-usd</v-icon>
-              {{ prettyNumber(agentStore.agent?.credits) }}
+              {{ prettyNumber(agentStore.agent?.credits ?? 0) }}
             </div>
           </v-col>
           <v-col cols="3">

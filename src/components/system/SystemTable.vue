@@ -140,7 +140,7 @@ function getImports(waypoint: any) {
   );
 }
 
-const headers = [
+const headers: any[] = [
   { title: 'Waypoint', align: 'center', sortable: true, key: 'symbol' },
   { title: 'Type', align: 'center', sortable: false, key: 'type' },
   {
@@ -187,7 +187,7 @@ const formattedItems = computed(() => {
     }));
 });
 
-const sortBy = [
+const sortBy: any[] = [
   {
     key: 'symbol',
     order: 'asc',

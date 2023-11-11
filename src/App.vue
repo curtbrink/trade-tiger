@@ -31,13 +31,12 @@ onBeforeMount(() => {
   document.title = 'Trade Tiger';
 
   const storeLoadingHook = ({
-    name, // name of the action
-    store, // store instance, same as `someStore`
-    args, // array of parameters passed to the action
     after, // hook after the action returns or resolves
     onError, // hook if the action throws or rejects
+  }: {
+    after: any;
+    onError: any;
   }) => {
-    console.log(name);
     const loadingSpinner = useLoadingSpinner();
     loadingSpinner.setLoading();
 

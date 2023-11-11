@@ -18,7 +18,7 @@ import { computed } from 'vue';
 
 const currentLocationStore = useCurrentLocationStore();
 
-const waypointGroups = {
+const waypointGroups: any = {
   planet: [WaypointType.Planet, WaypointType.GasGiant, WaypointType.Moon],
   asteroid: [
     WaypointType.Asteroid,
@@ -39,14 +39,14 @@ const waypointGroups = {
   ],
 };
 
-const markerStyle = {
+const markerStyle: any = {
   planet: '#eee',
   asteroid: '#f00',
   artificial: '#0f0',
   other: '#00f',
 };
 
-const markerPriority = {
+const markerPriority: any = {
   planet: 0,
   asteroid: 1,
   artificial: 2,

@@ -23,13 +23,13 @@
 <script lang="ts" setup>
 import { useMarketStore } from '@/store/market';
 import { useShipStore } from '@/store/ship';
-import { useSnackbar } from '@/store/snackbar';
+import { TradeGoodSymbol } from '@/api/models/market.model';
 
 const marketStore = useMarketStore();
 const shipStore = useShipStore();
 const shipCargo = shipStore.selectedShip?.cargo;
 
-const headers = [
+const headers: any[] = [
   { title: 'Name', align: 'center', sortable: true, key: 'symbol' },
   { title: 'Type', align: 'center', sortable: false, key: 'type' },
   { title: 'Supply', align: 'center', sortable: false, key: 'supply' },
@@ -37,9 +37,9 @@ const headers = [
   { title: 'SP', align: 'center', sortable: false, key: 'sellPrice' },
   { title: 'Vol', align: 'center', sortable: false, key: 'tradeVolume' },
   { title: 'Actions', align: 'center', sortable: false, key: 'actions' },
-];
+] as any[];
 
-const sortBy = [
+const sortBy: any[] = [
   {
     key: 'symbol',
     order: 'asc',
@@ -56,7 +56,7 @@ async function sellAll(cargoType: string) {
   );
 }
 
-function cargoOwned(cargoType: string) {
+function cargoOwned(cargoType: TradeGoodSymbol) {
   const ownedCargoTypes = shipCargo?.inventory.map((it) => it.symbol) ?? [];
   return ownedCargoTypes.includes(cargoType);
 }

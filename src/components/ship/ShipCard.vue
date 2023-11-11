@@ -13,7 +13,7 @@
           <v-row align="center">
             <v-col cols="6">
               Status: In transit<br />
-              Depart: {{ ship.nav.route.departure.symbol }}<br />
+              Depart: {{ ship.nav.route.origin.symbol }}<br />
               (time): {{ prettyDate(ship.nav.route.departureTime) }}<br />
               Destination: {{ ship.nav.route.destination.symbol }}<br />
               (time): {{ prettyDate(ship.nav.route.arrival) }}
