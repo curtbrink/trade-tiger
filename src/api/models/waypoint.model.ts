@@ -10,6 +10,11 @@ export enum WaypointType {
   Nebula = 'NEBULA',
   DebrisField = 'DEBRIS_FIELD',
   GravityWell = 'GRAVITY_WELL',
+  Asteroid = 'ASTEROID',
+  EngineeredAsteroid = 'ENGINEERED_ASTEROID',
+  AsteroidBase = 'ASTEROID_BASE',
+  ArtificialGravityWell = 'ARTIFICIAL_GRAVITY_WELL',
+  FuelStation = 'FUEL_STATION',
 }
 
 export interface WaypointOrbital {

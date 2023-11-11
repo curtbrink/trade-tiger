@@ -9,6 +9,11 @@
         :title="item.label"></v-list-item>
       <v-divider />
       <v-list-item
+        v-if="currentLocationStore.currentSystemSymbol"
+        :to="{ path: '/system-map' }"
+        prepend-icon="mdi-map"
+        title="System Map" />
+      <v-list-item
         v-if="shipStore.selectedShip"
         :to="{ path: '/controls' }"
         prepend-icon="mdi-rocket-launch"
@@ -32,11 +37,13 @@ import { useAgentStore } from '@/store/agent';
 import { useShipyardStore } from '@/store/shipyard';
 import { useShipStore } from '@/store/ship';
 import { useMarketStore } from '@/store/market';
+import { useCurrentLocationStore } from '@/store/current-location';
 
 const agentStore = useAgentStore();
 const shipyardStore = useShipyardStore();
 const shipStore = useShipStore();
 const marketStore = useMarketStore();
+const currentLocationStore = useCurrentLocationStore();
 
 const authItems = [
   {

@@ -85,8 +85,10 @@ import { DateString, prettyDate } from '@/api/models/misc.types';
 import dayjs from 'dayjs';
 import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useShipStore } from '@/store/ship';
+import { useMarketStore } from '@/store/market';
 
 const shipStore = useShipStore();
+const marketStore = useMarketStore();
 const selectedShip = shipStore.selectedShip!;
 
 let now = ref(dayjs());
@@ -146,6 +148,10 @@ const fuelCapacity = computed(() => selectedShip.fuel.capacity);
 watchEffect(async () => {
   if (routeProgressPercent.value > 100) {
     await shipStore.refreshNav(selectedShip.symbol);
+    await marketStore.getMarketForWaypoint(
+      selectedShip.nav.systemSymbol,
+      selectedShip.nav.waypointSymbol,
+    );
   }
 });
 watchEffect(async () => {

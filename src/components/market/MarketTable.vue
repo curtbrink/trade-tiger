@@ -13,7 +13,7 @@
           variant="outlined"
           prepend-icon="mdi-currency-usd"
           :disabled="!cargoOwned(item.symbol)"
-          @click="snackbar.showError('you sold a thing')"
+          @click="sellAll(item.symbol)"
           >Sell All</v-btn
         >
       </div>
@@ -28,7 +28,6 @@ import { useSnackbar } from '@/store/snackbar';
 const marketStore = useMarketStore();
 const shipStore = useShipStore();
 const shipCargo = shipStore.selectedShip?.cargo;
-const snackbar = useSnackbar();
 
 const headers = [
   { title: 'Name', align: 'center', sortable: true, key: 'symbol' },
@@ -46,6 +45,16 @@ const sortBy = [
     order: 'asc',
   },
 ];
+
+async function sellAll(cargoType: string) {
+  const numberToSell =
+    shipCargo?.inventory.find((it) => it.symbol === cargoType)?.units ?? 0;
+  await shipStore.sellCargo(
+    shipStore.selectedShip!.symbol,
+    cargoType,
+    numberToSell,
+  );
+}
 
 function cargoOwned(cargoType: string) {
   const ownedCargoTypes = shipCargo?.inventory.map((it) => it.symbol) ?? [];

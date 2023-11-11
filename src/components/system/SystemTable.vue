@@ -6,6 +6,12 @@
       :items="traitOptions"
       clearable
       @click:clear="clearSelectedTrait" />
+    <v-select
+      label="Filter to specific import..."
+      v-model="selectedImport"
+      :items="importOptions"
+      clearable
+      @click:clear="clearSelectedImport" />
     <v-data-table
       :headers="headers"
       :items="formattedItems"
@@ -27,6 +33,20 @@
           >
         </div>
       </template>
+      <template v-slot:item.market="{ item }">
+        <div v-if="itemHasMarket(item)">
+          <v-tooltip location="top" :text="getExports(item)">
+            <template v-slot:activator="{ props }">
+              <v-icon v-bind="props">mdi-arrow-up</v-icon>
+            </template>
+          </v-tooltip>
+          <v-tooltip location="top" :text="getImports(item)">
+            <template v-slot:activator="{ props }">
+              <v-icon v-bind="props">mdi-arrow-down</v-icon>
+            </template>
+          </v-tooltip>
+        </div>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -35,6 +55,8 @@ import { Waypoint, WaypointTraitSymbol } from '@/api/models/waypoint.model';
 import { useShipStore } from '@/store/ship';
 import { useCurrentLocationStore } from '@/store/current-location';
 import { computed, ref } from 'vue';
+import { useMarketStore } from '@/store/market';
+import { TradeGoodSymbol } from '@/api/models/market.model';
 
 const props = defineProps<{
   waypoints: Waypoint[];
@@ -42,15 +64,21 @@ const props = defineProps<{
 }>();
 
 const selectedTrait = ref(null);
+const selectedImport = ref(null);
 
 const traitOptions = Object.values(WaypointTraitSymbol).sort();
+const importOptions = Object.values(TradeGoodSymbol).sort();
 
 function clearSelectedTrait() {
   selectedTrait.value = null;
 }
+function clearSelectedImport() {
+  selectedImport.value = null;
+}
 
 const shipStore = useShipStore();
 const currentLocationStore = useCurrentLocationStore();
+const marketStore = useMarketStore();
 
 function getDistance(waypoint: Waypoint) {
   const xDiff =
@@ -61,6 +89,34 @@ function getDistance(waypoint: Waypoint) {
     Math.min(waypoint.y, currentLocationStore.currentWaypoint!.y);
 
   return Math.round(Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
+}
+
+function itemHasMarket(waypoint: any) {
+  return (
+    marketStore.waypointMarkets.find(
+      (market) => market.symbol === waypoint.symbol,
+    ) !== undefined
+  );
+}
+
+function getExports(waypoint: any) {
+  return (
+    'Exports: ' +
+    marketStore.waypointMarkets
+      .find((market) => market.symbol === waypoint.symbol)!
+      .exports.map((exp) => exp.name)
+      .join(', ')
+  );
+}
+
+function getImports(waypoint: any) {
+  return (
+    'Imports: ' +
+    marketStore.waypointMarkets
+      .find((market) => market.symbol === waypoint.symbol)!
+      .imports.map((exp) => exp.name)
+      .join(', ')
+  );
 }
 
 const headers = [
@@ -74,6 +130,7 @@ const headers = [
   },
   { title: 'Distance', align: 'center', sortable: false, key: 'distance' },
   { title: 'Traits', align: 'center', sortable: false, key: 'traits' },
+  { title: 'Market', align: 'center', sortable: false, key: 'market' },
   { title: 'Actions', align: 'center', sortable: false, key: 'actions' },
 ];
 
@@ -83,6 +140,14 @@ const formattedItems = computed(() => {
       (it) =>
         selectedTrait.value === null ||
         it.traits.map((trait) => trait.symbol).includes(selectedTrait.value),
+    )
+    .filter(
+      (it) =>
+        selectedImport.value === null ||
+        marketStore.waypointMarkets
+          .find((market) => market.symbol === it.symbol)
+          ?.imports.map((imp) => imp.symbol)
+          .includes(selectedImport.value),
     )
     .map((it) => ({
       symbol: it.symbol,

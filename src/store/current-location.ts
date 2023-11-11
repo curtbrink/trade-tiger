@@ -34,6 +34,15 @@ export const useCurrentLocationStore = defineStore('currentLocation', {
         this.systemWaypoints = await iteratePagedData(
           waypointApi.getWaypointCallbackForSystem(this.currentSystemSymbol),
         );
+
+        const marketStore = useMarketStore();
+        const marketWaypoints = this.systemWaypoints
+          .filter((wp) => waypointHasTrait(WaypointTraitSymbol.Marketplace, wp))
+          .map((wp) => ({
+            systemSymbol: wp.systemSymbol,
+            waypointSymbol: wp.symbol,
+          }));
+        await marketStore.getMarketsForWaypoints(marketWaypoints);
       }
       this.currentWaypoint = this.systemWaypoints.find(
         (it) => it.symbol === this.currentWaypointSymbol,

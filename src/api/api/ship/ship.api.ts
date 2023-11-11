@@ -10,6 +10,7 @@ import {
   RefreshCooldownResponse,
   RefreshNavResponse,
   RefuelShipResponse,
+  SellCargoResponse,
 } from '@/api/api/ship/ship-response.model';
 import {
   NavigateShipRequest,
@@ -28,6 +29,7 @@ const shipApi = {
   refuelShip: (symbol: string) => `my/ships/${symbol}/refuel`,
   extractResources: (symbol: string) => `my/ships/${symbol}/extract`,
   refreshCooldown: (symbol: string) => `my/ships/${symbol}/cooldown`,
+  sellCargo: (symbol: string) => `my/ships/${symbol}/sell`,
 };
 
 export default {
@@ -98,6 +100,15 @@ export default {
   refreshShipCooldown(shipSymbol: string): Promise<RefreshCooldownResponse> {
     return spacetradersApi
       .get(shipApi.refreshCooldown(shipSymbol))
+      .then((res) => res.data);
+  },
+
+  sellCargo(
+    shipSymbol: string,
+    payload: any,
+  ): Promise<ResponseData<SellCargoResponse>> {
+    return spacetradersApi
+      .post(shipApi.sellCargo(shipSymbol), payload)
       .then((res) => res.data);
   },
 };

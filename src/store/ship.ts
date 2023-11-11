@@ -101,6 +101,16 @@ export const useShipStore = defineStore('ship', {
       await this.patchCooldown(shipSymbol, response.data.cooldown);
       await this.patchCargo(shipSymbol, response.data.cargo);
     },
+    async sellCargo(shipSymbol: string, cargoType: string, amount: number) {
+      const payload = {
+        symbol: cargoType,
+        units: amount,
+      };
+      const response = await shipApi.sellCargo(shipSymbol, payload);
+      await this.patchCargo(shipSymbol, response.data.cargo);
+      const agentStore = useAgentStore();
+      agentStore.setAgent(response.data.agent);
+    },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
       console.log('patchNav');
       await this.patchShipProperty(shipSymbol, 'nav', newNav);

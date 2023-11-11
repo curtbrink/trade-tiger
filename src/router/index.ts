@@ -9,6 +9,7 @@ import SystemView from '@/views/System.vue';
 import ShipyardView from '@/views/Shipyard.vue';
 import ControlCenterView from '@/views/ControlCenter.vue';
 import MarketView from '@/views/Market.vue';
+import SystemMapView from '@/views/SystemMap.vue';
 import { useAgentStore } from '@/store/agent';
 import { useShipStore } from '@/store/ship';
 import { useContractStore } from '@/store/contract';
@@ -46,6 +47,13 @@ const routes = [
   {
     path: '/systems',
     component: SystemView,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: '/system-map',
+    component: SystemMapView,
     meta: {
       requiresAuth: true,
     },

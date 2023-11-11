@@ -56,3 +56,9 @@ export interface ExtractResourcesResponse {
   extraction: ShipExtraction;
   cargo: ShipCargo;
 }
+
+export interface SellCargoResponse {
+  agent: Agent;
+  cargo: ShipCargo;
+  transaction: MarketTransaction;
+}
