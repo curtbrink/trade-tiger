@@ -1,11 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>
-      Inventory
-      <span class="subtitle">
-        {{ ship.cargo.units }} / {{ ship.cargo.capacity }}
-      </span>
-    </v-card-title>
+    <v-card-title> Outfitting </v-card-title>
     <v-card-text>
       <v-container>
         <v-row>

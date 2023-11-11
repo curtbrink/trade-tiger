@@ -3,6 +3,8 @@ import { Contract } from '@/api/models/contract.model';
 import { iteratePagedData } from '@/api/models/misc.types';
 import contractApi from '@/api/api/contract/contract.api';
 import { useAgentStore } from '@/store/agent';
+import { TradeGoodSymbol } from '@/api/models/market.model';
+import { useShipStore } from '@/store/ship';
 
 export const useContractStore = defineStore('contract', {
   state: () => ({
@@ -37,6 +39,26 @@ export const useContractStore = defineStore('contract', {
 
       const agentStore = useAgentStore();
       agentStore.setAgent(agent);
+    },
+    async deliverCargo(
+      contractId: string,
+      shipSymbol: string,
+      tradeSymbol: TradeGoodSymbol,
+      units: number,
+    ) {
+      const deliverResponse = await contractApi.deliverCargo(contractId, {
+        shipSymbol,
+        tradeSymbol,
+        units,
+      });
+      const shipStore = useShipStore();
+      await shipStore.patchCargo(shipSymbol, deliverResponse.data.cargo);
+      await this.replaceContract(contractId, deliverResponse.data.contract);
+    },
+    async replaceContract(contractId: string, newContract: Contract) {
+      this.contracts = this.contracts.map((contract) =>
+        contract.id === contractId ? newContract : contract,
+      );
     },
   },
 });

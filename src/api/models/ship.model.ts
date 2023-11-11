@@ -1,5 +1,6 @@
 import { Waypoint } from '@/api/models/waypoint.model';
 import { DateString } from '@/api/models/misc.types';
+import { TradeGood, TradeGoodSymbol } from '@/api/models/market.model';
 
 export enum ShipRole {
   Fabricator = 'FABRICATOR',
@@ -213,7 +214,7 @@ export interface ShipMount {
 }
 
 export interface ShipCargoItem {
-  symbol: string;
+  symbol: TradeGoodSymbol;
   name: string;
   description: string;
   units: number;

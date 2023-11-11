@@ -1,4 +1,5 @@
 import { DateString } from '@/api/models/misc.types';
+import { TradeGood, TradeGoodSymbol } from '@/api/models/market.model';
 
 export enum ContractType {
   Procurement = 'PROCUREMENT',
@@ -12,7 +13,7 @@ export interface ContractPayment {
 }
 
 export interface ContractDelivery {
-  tradeSymbol: string;
+  tradeSymbol: TradeGoodSymbol;
   destinationSymbol: string;
   unitsRequired: number;
   unitsFulfilled: number;

@@ -45,22 +45,32 @@
       <ContractPayout :payout="contract.terms.payment" />
     </v-card-text>
     <v-card-actions>
-      <v-row>
-        <v-col v-if="!contract.accepted" cols="12">
-          <v-btn
-            block
-            variant="outlined"
-            prepend-icon="mdi-check-bold"
-            @click="contractStore.acceptContract(contract.id)"
-            >Accept</v-btn
-          >
-        </v-col>
-        <v-col v-else cols="12">
-          <v-btn block disabled variant="outlined" prepend-icon="mdi-check-bold"
-            >Accepted</v-btn
-          >
-        </v-col>
-      </v-row>
+      <v-container>
+        <v-row>
+          <v-col cols="12">
+            <v-btn
+              block
+              variant="outlined"
+              prepend-icon="mdi-check-bold"
+              :disabled="contract.accepted"
+              @click="contractStore.acceptContract(contract.id)"
+              >{{ acceptButtonLabel }}</v-btn
+            >
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-btn
+              block
+              variant="outlined"
+              prepend-icon="mdi-package-variant-closed-plus"
+              :disabled="!canDeliver"
+              @click="deliverAll"
+              >Deliver</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-container>
     </v-card-actions>
   </v-card>
 </template>
@@ -71,16 +81,60 @@ import { computed } from 'vue';
 import ContractPayout from '@/components/contract/ContractPayout.vue';
 import { useContractStore } from '@/store/contract';
 import { prettyDate } from '@/api/models/misc.types';
+import { useCurrentLocationStore } from '@/store/current-location';
+import { useShipStore } from '@/store/ship';
 
 const props = defineProps<{
   contract: Contract;
 }>();
 
 const contractStore = useContractStore();
+const currentLocationStore = useCurrentLocationStore();
+const shipStore = useShipStore();
 
 const subtitle = computed(() => {
   return `${props.contract.factionSymbol.toLowerCase()} | ${props.contract.type.toLowerCase()}`;
 });
+
+const acceptButtonLabel = computed(() => {
+  return `Accept${props.contract.accepted ? 'ed' : ''}`;
+});
+
+const deliverableGoods = computed(() => {
+  return props.contract.terms.deliver.map((term) => {
+    const goodIsNeeded = term.unitsRequired > term.unitsFulfilled;
+    const sameSystem =
+      term.destinationSymbol === currentLocationStore.currentWaypointSymbol;
+    const goodInInventory = shipStore.selectedShip!.cargo.inventory.find(
+      (inv) => inv.symbol === term.tradeSymbol,
+    );
+
+    const deliverable = (goodIsNeeded &&
+      sameSystem &&
+      goodInInventory) as boolean;
+    return {
+      ...term,
+      deliverable,
+      deliverableAmount: deliverable ? goodInInventory!.units : undefined,
+    };
+  });
+});
+
+const canDeliver = computed(() =>
+  deliverableGoods.value.some((good) => good.deliverable),
+);
+
+async function deliverAll() {
+  for (const good of deliverableGoods.value) {
+    if (!good.deliverable || good.deliverableAmount === undefined) continue;
+    await contractStore.deliverCargo(
+      props.contract.id,
+      shipStore.selectedShip!.symbol,
+      good.tradeSymbol,
+      good.deliverableAmount,
+    );
+  }
+}
 
 function getProgressValue(term: ContractDelivery) {
   return (term.unitsFulfilled / term.unitsRequired) * 100;
