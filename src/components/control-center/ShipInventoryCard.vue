@@ -13,6 +13,14 @@
             <v-card variant="outlined">
               <v-card-title>{{ item.units }}</v-card-title>
               <v-card-text>{{ item.name }}</v-card-text>
+              <v-card-actions>
+                <v-btn
+                  block
+                  variant="outlined"
+                  @click="jettisonCargo(item.symbol)">
+                  Jettison
+                </v-btn>
+              </v-card-actions>
             </v-card>
           </v-col>
         </v-row>
@@ -25,4 +33,12 @@ import { useShipStore } from '@/store/ship';
 
 const shipStore = useShipStore();
 const ship = shipStore.selectedShip!;
+
+async function jettisonCargo(symbol: string) {
+  const amountToJettison =
+    ship.cargo.inventory.find((it) => it.symbol === symbol)?.units ?? 0;
+  if (amountToJettison) {
+    await shipStore.jettisonCargo(ship.symbol, symbol, amountToJettison);
+  }
+}
 </script>

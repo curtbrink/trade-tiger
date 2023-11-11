@@ -62,3 +62,7 @@ export interface SellCargoResponse {
   cargo: ShipCargo;
   transaction: MarketTransaction;
 }
+
+export interface JettisonCargoResponse {
+  cargo: ShipCargo;
+}

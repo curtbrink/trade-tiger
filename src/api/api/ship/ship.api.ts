@@ -4,6 +4,7 @@ import { Ship } from '@/api/models/ship.model';
 import {
   DockShipResponse,
   ExtractResourcesResponse,
+  JettisonCargoResponse,
   NavigateShipResponse,
   OrbitShipResponse,
   PurchaseShipResponse,
@@ -30,6 +31,7 @@ const shipApi = {
   extractResources: (symbol: string) => `my/ships/${symbol}/extract`,
   refreshCooldown: (symbol: string) => `my/ships/${symbol}/cooldown`,
   sellCargo: (symbol: string) => `my/ships/${symbol}/sell`,
+  jettisonCargo: (symbol: string) => `my/ships/${symbol}/jettison`,
 };
 
 export default {
@@ -109,6 +111,15 @@ export default {
   ): Promise<ResponseData<SellCargoResponse>> {
     return spacetradersApi
       .post(shipApi.sellCargo(shipSymbol), payload)
+      .then((res) => res.data);
+  },
+
+  jettisonCargo(
+    shipSymbol: string,
+    payload: any,
+  ): Promise<ResponseData<JettisonCargoResponse>> {
+    return spacetradersApi
+      .post(shipApi.jettisonCargo(shipSymbol), payload)
       .then((res) => res.data);
   },
 };

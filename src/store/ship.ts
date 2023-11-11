@@ -111,6 +111,14 @@ export const useShipStore = defineStore('ship', {
       const agentStore = useAgentStore();
       agentStore.setAgent(response.data.agent);
     },
+    async jettisonCargo(shipSymbol: string, cargoType: string, amount: number) {
+      const payload = {
+        symbol: cargoType,
+        units: amount,
+      };
+      const response = await shipApi.jettisonCargo(shipSymbol, payload);
+      await this.patchCargo(shipSymbol, response.data.cargo);
+    },
     async patchNav(shipSymbol: string, newNav: ShipNavigation) {
       console.log('patchNav');
       await this.patchShipProperty(shipSymbol, 'nav', newNav);

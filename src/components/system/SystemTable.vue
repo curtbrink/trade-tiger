@@ -128,7 +128,7 @@ const headers = [
     sortable: false,
     key: 'coordinates',
   },
-  { title: 'Distance', align: 'center', sortable: false, key: 'distance' },
+  { title: 'Distance', align: 'center', sortable: true, key: 'distance' },
   { title: 'Traits', align: 'center', sortable: false, key: 'traits' },
   { title: 'Market', align: 'center', sortable: false, key: 'market' },
   { title: 'Actions', align: 'center', sortable: false, key: 'actions' },
